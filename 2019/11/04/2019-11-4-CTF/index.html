@@ -243,20 +243,125 @@
 <ul>
 <li>select 1,<code>`2`</code>,3 from (select 1,2 union select * from flllllag)</li>
 </ul>
-<figure class="highlight plain"><figcaption><span>指取from结果的第二列</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">| 1    | 2                                          | 3    |</span><br><span class="line">| :--- | :----------------------------------------- | :--- |</span><br><span class="line">| 1    | 2                                          | 3    |</span><br><span class="line">| 1    | flag&#123;3690c6f6-fe49-11e9-bf58-005056c00001&#125; | 3    |</span><br><span class="line"></span><br><span class="line">&gt;select * from test union select 1,`` `2` ``,3 from (select 1,2 union select * from flllllag)a;</span><br><span class="line"></span><br><span class="line">结果就是：</span><br><span class="line"></span><br><span class="line">| id   | title                                      | content |</span><br><span class="line">| :--- | :----------------------------------------- | :------ |</span><br><span class="line">| 1    | hello                                      | tinmin  |</span><br><span class="line">| 1    | 2                                          | 3       |</span><br><span class="line">| 1    | flag&#123;3690c6f6-fe49-11e9-bf58-005056c00001&#125; | 3       |</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">###   过滤逗号</span><br><span class="line"></span><br><span class="line">回顾过滤逗号的语句</span><br><span class="line"></span><br><span class="line">&gt;select * from test union select 1,2,3</span><br><span class="line"></span><br><span class="line">等同于</span><br><span class="line"></span><br><span class="line">select * from test union select * from (select 1)a join (select 2)b join (select 3)c</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">回到语句</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;select * from test union select 1,`2`,3 from (select 1,2 union select * from flllllag)a;</span><br><span class="line"></span><br><span class="line">* select * from test union select * from (select 1)a join (select 2)b join(select `2` from (select 1,2 union select * from flllllag)i)k;</span><br><span class="line"></span><br><span class="line">&gt;`    叫  backticks</span><br><span class="line"></span><br><span class="line">平时sql语句喜欢用： </span><br><span class="line"></span><br><span class="line">&gt;select id from user</span><br><span class="line"></span><br><span class="line">规范写法： </span><br><span class="line"></span><br><span class="line">&gt;select `` `id` `` from user</span><br><span class="line"></span><br><span class="line">同样为查询id列</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">`2`是查询表头为2的列</span><br><span class="line"></span><br><span class="line">还可以</span><br><span class="line"></span><br><span class="line">选取列查</span><br></pre></td></tr></table></figure>
-<p>select * from (select 1,2)a</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">| 1    | 2    |</span><br><span class="line">| :--- | :--- |</span><br><span class="line">| 1    | 2    |</span><br></pre></td></tr></table></figure>
-<p>select a.1 from (select 1,2)a</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">| 1    |</span><br><span class="line">| :--- |</span><br><span class="line">| 1    |</span><br></pre></td></tr></table></figure>
-<p>select a.2 from (select 1,2)a</p>
-<pre><code>
-| 2    |
-| :--- |
-| 2    |
+<p><code>`2`</code> 指取from结果的第二列</p>
+<table>
+<thead>
+<tr>
+<th align="left">1</th>
+<th align="left">2</th>
+<th align="left">3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">3</td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left">flag{3690c6f6-fe49-11e9-bf58-005056c00001}</td>
+<td align="left">3</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>select * from test union select 1,<code>`2`</code>,3 from (select 1,2 union select * from flllllag)a;</p>
+</blockquote>
+<p>结果就是：</p>
+<table>
+<thead>
+<tr>
+<th align="left">id</th>
+<th align="left">title</th>
+<th align="left">content</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">hello</td>
+<td align="left">tinmin</td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left">2</td>
+<td align="left">3</td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left">flag{3690c6f6-fe49-11e9-bf58-005056c00001}</td>
+<td align="left">3</td>
+</tr>
+</tbody></table>
+<h3 id="过滤逗号"><a href="#过滤逗号" class="headerlink" title="过滤逗号"></a>过滤逗号</h3><p>回顾过滤逗号的语句</p>
+<blockquote>
+<p>select * from test union select 1,2,3</p>
+</blockquote>
+<p>等同于</p>
+<p>select * from test union select * from (select 1)a join (select 2)b join (select 3)c</p>
+<p>回到语句</p>
+<blockquote>
+<p>select * from test union select 1,<code>2</code>,3 from (select 1,2 union select * from flllllag)a;</p>
+</blockquote>
+<ul>
+<li>select * from test union select * from (select 1)a join (select 2)b join(select <code>2</code> from (select 1,2 union select * from flllllag)i)k;</li>
+</ul>
+<blockquote>
+<p>`    叫  backticks</p>
+</blockquote>
+<p>平时sql语句喜欢用： </p>
+<blockquote>
+<p>select id from user</p>
+</blockquote>
+<p>规范写法： </p>
+<blockquote>
+<p>select <code>`id`</code> from user</p>
+</blockquote>
+<p>同样为查询id列</p>
+<p><code>2</code>是查询表头为2的列</p>
+<p>还可以</p>
+<p>选取列查</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from (select 1,2)a</span><br></pre></td></tr></table></figure>
 
-保证join一列
+<table>
+<thead>
+<tr>
+<th align="left">1</th>
+<th align="left">2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">2</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select a.1 from (select 1,2)a</span><br></pre></td></tr></table></figure>
 
-* select * from test union select * from (select 1)a join (select 2)b join(select i.2 from (select 1,2 union select * from flllllag)i)k;</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select a.2 from (select 1,2)a</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">2</td>
+</tr>
+</tbody></table>
+<p>保证join一列</p>
+<ul>
+<li>select * from test union select * from (select 1)a join (select 2)b join(select i.2 from (select 1,2 union select * from flllllag)i)k;</li>
+</ul>
+
   </article>
   <aside class="table-content" id="site-toc">
   <div class="table-content-title">
@@ -264,7 +369,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#过滤逗号"><span class="toc-text">过滤逗号</span></a></li></ol>
   </div>
 </aside>
   
