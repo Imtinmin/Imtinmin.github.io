@@ -186,7 +186,10 @@
     </div>
   
   <article class="passage-article">
-    <p>题目语句为 select * from test where id=x</p>
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>当sql过滤了<code>or</code>时，无法从<code>information_schema</code>数据库查出列名。但是存在<code>innodb_index_stats</code>、<code>innodb_index_table</code>两张表（mysql版本大于5.6.3），可以查询出表名，再进行无列名注入</p>
+<p><a href="https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-3.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-3.html</a></p>
+<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/mysql/mysql5.6.3.png" alt="img"></p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>题目语句为 select * from test where id=x</p>
 <p>当前数据库有两张表</p>
 <p><code>flllllag</code></p>
 <table>
@@ -217,14 +220,15 @@
 </tr>
 </tbody></table>
 <p>flllllag表有两列，</p>
-<p>mysql&gt; select 1,2 union select * from flllllag;</p>
-<p>mysql&gt; select * from (select 1,2 union select * from flllllag)a;</p>
-<blockquote>
-<p>backticks 无法被转义，我这里用backticks表示</p>
-</blockquote>
-<p>mysql&gt;select * from test union select 1,```2`  ``,3 from (select 1,2 union select * from flllllag)a;</p>
+<p>有:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select 1,2 union select * from flllllag;</span><br><span class="line">mysql&gt; select * from (select 1,2 union select * from flllllag)a;</span><br></pre></td></tr></table></figure>
+
+
+
 <blockquote>
 <p>select 1,2 union select * from flllllag</p>
+</blockquote>
+<blockquote>
 <table>
 <thead>
 <tr>
@@ -369,7 +373,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#过滤逗号"><span class="toc-text">过滤逗号</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例"><span class="toc-text">示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#过滤逗号"><span class="toc-text">过滤逗号</span></a></li></ol></li></ol>
   </div>
 </aside>
   
