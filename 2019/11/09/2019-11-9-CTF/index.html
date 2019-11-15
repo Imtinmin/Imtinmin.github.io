@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Imtinmin" />
+  
+  
+  <title>2019-11-9-CTF.md | Imtinmin的小站</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="CTF,备忘," />
+  
+
+  
+  <meta name="description" content="Imtinmin的小站">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":true,"count":true},
+    welcome: {"enable":false,"interval":30},
+    start_time: "2019-10-31",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", "efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Imtinmin",
+    share: {"twitter":false,"facebook":false,"weibo":false,"qq":false,"wechat":false},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">Imtinmin</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 无知萌新</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self"></a>
+      
+        <a href="/about/" target="_self"></a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/Imtinmin/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-11-09
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    2019-11-9-CTF.md
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://i.loli.net/2019/11/09/TJZLKUBs3PEq7eN.png);"></figure>
+    </div>
+  
+  <article class="passage-article">
+    <h2 id="kail"><a href="#kail" class="headerlink" title="kail"></a>kail</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-rc.d ssh enable	开机启动ssh</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="burpsuite"><a href="#burpsuite" class="headerlink" title="burpsuite"></a>burpsuite</h2><p><code>intruder</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">第一种：</span><br><span class="line"></span><br><span class="line">Sniper标签 这个是我们最常用的，Sniper是狙击手的意思。这个模式会使用单一的payload【就是导入字典的payload】组。它会针对每个position中$$位置设置payload。这种攻击类型适合对常见漏洞中的请求参数单独地进行测试。攻击中的请求总数应该是position数量和payload数量的乘积。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">第二种：</span><br><span class="line"></span><br><span class="line">Battering ram – 这一模式是使用单一的payload组。它会重复payload并且一次把所有相同的payload放入指定的位置中。这种攻击适合那种需要在请求中把相同的输入放到多个位置的情况。请求的总数是payload组中payload的总数。简单说就是一个playload字典同时应用到多个position中</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">第三种：</span><br><span class="line"></span><br><span class="line">Pitchfork – 这一模式是使用多个payload组。对于定义的位置可以使用不同的payload组。攻击会同步迭代所有的payload组，把payload放入每个定义的位置中。比如：position中A处有a字典，B处有b字典，则a【1】将会对应b【1】进行attack处理，这种攻击类型非常适合那种不同位置中需要插入不同但相关的输入的情况。请求的数量应该是最小的payload组中的payload数量</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">第四种：</span><br><span class="line"></span><br><span class="line">Cluster bomb – 这种模式会使用多个payload组。每个定义的位置中有不同的payload组。攻击会迭代每个payload组，每种payload组合都会被测试一遍。比如：position中A处有a字典，B处有b字典，则两个字典将会循环搭配组合进行attack处理这种攻击适用于那种位置中需要不同且不相关或者未知的输入的攻击。攻击请求的总数是各payload组中payload数量的乘积。</span><br></pre></td></tr></table></figure>
+
+<h2 id="python-lambda"><a href="#python-lambda" class="headerlink" title="python lambda"></a>python lambda</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = lambda x,y :x*y</span><br><span class="line">a(3,2)</span><br><span class="line">#6</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h2><p>一些转义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;&lt;?php eval(\$_POST[&apos;tinmin&apos;]);?&gt;&quot; &gt; tinmin.php</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="MYSQL5-7"><a href="#MYSQL5-7" class="headerlink" title="MYSQL5.7"></a>MYSQL5.7</h2><p><em>创建用户</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE USER &apos;username&apos;@&apos;host&apos; IDENTIFIED BY &apos;password&apos;;</span><br></pre></td></tr></table></figure>
+
+<p><em>授权</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on mq.* to test@localhost identified by &apos;PASSWORD&apos;;</span><br></pre></td></tr></table></figure>
+<p><em>删除用户</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP USER &apos;USER&apos;@&apos;host&apos;</span><br></pre></td></tr></table></figure>
+
+<h2 id="python-php-易遗忘点"><a href="#python-php-易遗忘点" class="headerlink" title="python php 易遗忘点"></a>python php 易遗忘点</h2><p>python 判断数据类型取代<code>type</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">isinstance([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],list)</span><br><span class="line"><span class="comment">#True</span></span><br></pre></td></tr></table></figure>
+<p>python  三目运算符</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">3</span> <span class="keyword">if</span> x &lt; <span class="number">0</span> <span class="keyword">else</span> <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>如果x小于零，则a=6，否则还是3</p>
+<p>函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def tinmin():</span><br><span class="line">	return &apos;hello&apos;</span><br><span class="line">tinmin.func_code.co_filename = &quot;tinmin&quot;</span><br></pre></td></tr></table></figure>
+
+<p>获取函数名称和文件位置：func_name, func_code.co_filename</p>
+<p>php 三目运算符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">php &gt; <span class="variable">$x</span> = 0;</span><br><span class="line">php &gt; <span class="variable">$p</span>= <span class="variable">$x</span> &gt; 5 ? 5:4;</span><br><span class="line">php &gt; <span class="built_in">echo</span> <span class="variable">$p</span>;</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+<p>join 连接字符串</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;<span class="string">''</span>.join([<span class="string">'1'</span>,<span class="string">'2'</span>,<span class="string">'3'</span>])  <span class="comment">#列表</span></span><br><span class="line"><span class="number">123</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">''</span>.join((<span class="string">'1'</span>,<span class="string">'2'</span>,<span class="string">'3'</span>,<span class="string">'4'</span>)) <span class="comment">#元组</span></span><br><span class="line"><span class="number">1234</span></span><br></pre></td></tr></table></figure>
+
+<p>随机字符串</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">""</span>.join(__import__(<span class="string">"random"</span>).sample((__import__(<span class="string">"string"</span>).ascii_letters+__import__(<span class="string">"string"</span>).digits),<span class="number">16</span>))</span><br><span class="line"></span><br><span class="line"><span class="string">""</span>.join(__import__(<span class="string">"random"</span>).choice(__import__(<span class="string">"string"</span>).ascii_letters+__import__(<span class="string">"string"</span>).digits) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">16</span>))</span><br></pre></td></tr></table></figure>
+
+
+<p>python3 的sha1 md5不需要hashlib库了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from _md5 import md5</span><br><span class="line">md5(&quot;tinmin&quot;.encode(&quot;utf-8&quot;)).hexdigest()</span><br><span class="line">from _sha1 import sha1</span><br></pre></td></tr></table></figure>
+
+<h3 id="php数组转化字符串方法"><a href="#php数组转化字符串方法" class="headerlink" title="php数组转化字符串方法"></a>php数组转化字符串方法</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">join(<span class="keyword">array</span>(<span class="string">"I"</span>,<span class="string">"am"</span>,<span class="string">"tinmin"</span>),<span class="string">","</span>)</span><br><span class="line">    &gt;&gt; I,am,tinmin</span><br><span class="line">    </span><br><span class="line"> serialize(<span class="keyword">array</span>(<span class="string">"I"</span>,<span class="string">"am"</span>,<span class="string">"tinmin"</span>))</span><br><span class="line">    &gt;&gt;a:<span class="number">3</span>:&#123;i:<span class="number">0</span>;s:<span class="number">1</span>:<span class="string">"I"</span>;i:<span class="number">1</span>;s:<span class="number">2</span>:<span class="string">"am"</span>;i:<span class="number">2</span>;s:<span class="number">6</span>:<span class="string">"tinmin"</span>;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="密码学RSA-python的使用"><a href="#密码学RSA-python的使用" class="headerlink" title="密码学RSA python的使用"></a>密码学RSA python的使用</h2><p>python3使用<code>pycryptodome</code>替代<code>pycrypto</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Cryptodome.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="comment"># ------读取公钥------</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'./pub.key'</span>,<span class="string">"r"</span>) <span class="keyword">as</span> f:</span><br><span class="line">	key = RSA.import_key(f)</span><br><span class="line">	n = key.n</span><br><span class="line">	e = key.e</span><br><span class="line">	</span><br><span class="line"><span class="comment"># ------生成私钥----------</span></span><br><span class="line"><span class="keyword">from</span> Cryptodome.Cipher <span class="keyword">import</span> PKCS1_v1_5</span><br><span class="line">prv = RSA.construct((N,e,int(d),p,q)) <span class="comment">#d 一般为mpz类型，需要转换为int</span></span><br><span class="line">rsa = PKCS1_v1_5.new(prv)</span><br><span class="line">rsa.decrypt((bytes.fromhex(cipher), e)) <span class="comment">#一般对密文进行hex解码再解密</span></span><br></pre></td></tr></table></figure>
+
+<p>无符号hex转ascii</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from Cryptodome.Util.number import long_to_bytes</span><br><span class="line">flag = int(cipher,16)</span><br><span class="line">m = pow(flag,d,N)</span><br><span class="line">long_to_bytes(m)	m没有0x</span><br></pre></td></tr></table></figure>
+
+<h2 id="格式化字符串"><a href="#格式化字符串" class="headerlink" title="格式化字符串"></a>格式化字符串</h2><p><code>PHP</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$num = <span class="string">"1"</span>;</span><br><span class="line">$str = <span class="string">"school"</span>;</span><br><span class="line"><span class="keyword">echo</span> sprintf(<span class="string">"you are number %u in the %s"</span>,$num,$str);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>you are number 1 in the school</p>
+</blockquote>
+<p><code>sprintf</code></p>
+<blockquote>
+<p>%u 无符号十进制数<br>%s 字符串<br>%c ascii码<br>%% 百分号<br>%e 科学记数法<br>%f 浮点数</p>
+</blockquote>
+<p><code>python</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"My name is &#123;&#125;"</span>.format(<span class="string">"tinmin"</span>)</span><br><span class="line"><span class="string">"My name is &#123;name&#125;"</span>.format(name=<span class="string">"tinmin"</span>)</span><br><span class="line"><span class="string">"My name is &#123;1&#125;"</span>.format(<span class="string">"tinmin"</span>,<span class="string">"imtinmin"</span>) <span class="comment">#My name is imtinmin</span></span><br><span class="line"><span class="string">"My name is %s"</span>%<span class="string">"tinmin"</span></span><br><span class="line"><span class="string">"You play %s like %s"</span>%(<span class="string">"CTF"</span>,<span class="string">"cxk"</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>C</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf(&quot;%s&quot;,&quot;hello world&quot;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="php-代码执行函数"><a href="#php-代码执行函数" class="headerlink" title="php 代码执行函数"></a>php 代码执行函数</h2><p><code>eval()</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">eval</span>($_POST[<span class="string">'tinmin'</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>POST：<br>tinmin=phpinfo();</p>
+</blockquote>
+<p><code>assert()</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	assert($_POST[<span class="string">'tinmin'</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>assert</code>函数执行失败，会停止执行文件后面的代码</p>
+<h3 id="命令执行函数"><a href="#命令执行函数" class="headerlink" title="命令执行函数"></a>命令执行函数</h3><p><code>exec()</code></p>
+<p>无回显，需要echo</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> exec(<span class="string">'ls'</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>可以使用<code>exec(&#39;ls&#39;,$a[]);</code>将执行结果输出到a数组，再输出</p>
+<p><code>passthru()</code></p>
+<p>有命令执行结果回显</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	passthru(<span class="string">'ls'</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>有回显，执行成功返回<code>True</code>，执行失败返回<code>False</code></p>
+<p><code>shell_exec()</code><br>相当于反撇号，无回显<br>例：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> `whoami`;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>system</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	system(<span class="string">'ls'</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="在当前目录启动HTTP服务"><a href="#在当前目录启动HTTP服务" class="headerlink" title="在当前目录启动HTTP服务"></a>在当前目录启动HTTP服务</h2><p>python2</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">py2 -m SimpleHTTPServer 1337</span><br></pre></td></tr></table></figure>
+
+<p>python3</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">py3 -m http.server 1337</span><br></pre></td></tr></table></figure>
+
+<p>php5.4+</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php -S localhost:7777</span><br></pre></td></tr></table></figure>
+
+<h2 id="linux-强大的lsb隐写查看工具"><a href="#linux-强大的lsb隐写查看工具" class="headerlink" title="linux 强大的lsb隐写查看工具"></a>linux 强大的lsb隐写查看工具</h2><blockquote>
+<p>先下个ruby 然后gem也有了，gem install zsteg</p>
+</blockquote>
+<p><a href="https://github.com/zed-0xff/zsteg" target="_blank" rel="noopener">zsteg</a></p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#kail"><span class="toc-text">kail</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#burpsuite"><span class="toc-text">burpsuite</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-lambda"><span class="toc-text">python lambda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux"><span class="toc-text">linux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MYSQL5-7"><span class="toc-text">MYSQL5.7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-php-易遗忘点"><span class="toc-text">python php 易遗忘点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#php数组转化字符串方法"><span class="toc-text">php数组转化字符串方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#密码学RSA-python的使用"><span class="toc-text">密码学RSA python的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#格式化字符串"><span class="toc-text">格式化字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#php-代码执行函数"><span class="toc-text">php 代码执行函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#命令执行函数"><span class="toc-text">命令执行函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在当前目录启动HTTP服务"><span class="toc-text">在当前目录启动HTTP服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux-强大的lsb隐写查看工具"><span class="toc-text">linux 强大的lsb隐写查看工具</span></a></li></ol>
+  </div>
+</aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/CTF/"><i class="fa fa-tags"></i>CTF</a>
+     
+      <a href="/tags/%E5%A4%87%E5%BF%98/"><i class="fa fa-tags"></i>备忘</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://ruanyifeng.com/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/design-patterns/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://juejin.im/user/5b91fcf06fb9a05d3c7fd4a5" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://segmentfault.com/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: 954093370@qq.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.jpg" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/2019/11/15/2019-11-15-CTF/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/2019/11/07/2019-11-7-CTF/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+  
+  
+  
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>
