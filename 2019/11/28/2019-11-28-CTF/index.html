@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Imtinmin" />
+  
+  
+  <title>CBC字节翻转攻击 | Imtinmin的小站</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="WEB,CRYPTO," />
+  
+
+  
+  <meta name="description" content="Imtinmin的小站">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":true,"count":true},
+    welcome: {"enable":false,"interval":30},
+    start_time: "2019-10-31",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Imtinmin",
+    share: {"twitter":false,"facebook":false,"weibo":false,"qq":false,"wechat":false},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">Imtinmin</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 无知萌新</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self"></a>
+      
+        <a href="/about/" target="_self"></a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/Imtinmin/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-11-28
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    CBC字节翻转攻击
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://i.loli.net/2019/11/28/bLB1v8xY7imug6E.png);"></figure>
+    </div>
+  
+  <article class="passage-article">
+    <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>web有关CBC的题偶尔就出现，老是忘，要经常复习QWQ,这里总结一下翻字节攻击</p>
+<h1 id="0X01-分析"><a href="#0X01-分析" class="headerlink" title="0X01 分析"></a>0X01 分析</h1><p>CBC解密过程：</p>
+<p><img src="https://i.loli.net/2019/11/28/pKkTmMR4sdlriyU.png" alt="image.png"></p>
+<p>需要知道的点</p>
+<blockquote>
+<p>aes-cbc 是分组加密，一般16个字节一组一块，iv也为16字节<br>中间值是指密文块解密之后的数据<br>iv会与第一组中间值异或最后得到明文，往后则是每一组的密文与下一组的中间值</p>
+</blockquote>
+<p>例如iv的第5位改变，那么第一组解密明文的第五位也会被改变</p>
+<p>往后则是，如果第一组密文的第5位改变，就会影响到第二组解密出来的明文的第5位（16位一组就是第21位被改了），以此类推</p>
+<h1 id="0x02测试"><a href="#0x02测试" class="headerlink" title="0x02测试"></a>0x02测试</h1><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">define(<span class="string">"METHOD"</span>,<span class="string">"aes-128-cbc"</span>);</span><br><span class="line">define(<span class="string">"SECRET_KEY"</span>, <span class="string">"17a8922b-11c1-11ea-bace-f430b9537591"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get_random_token</span><span class="params">()</span></span>&#123;</span><br><span class="line">    $random_token=<span class="string">''</span>;</span><br><span class="line">    <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;<span class="number">16</span>;$i++)&#123;</span><br><span class="line">        $random_token.=chr(rand(<span class="number">1</span>,<span class="number">255</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $random_token;</span><br><span class="line">&#125;</span><br><span class="line">$iv = get_random_token(<span class="number">16</span>);</span><br><span class="line">$info = <span class="string">'&#123;"role_id":3,"user_id":1,"name":"tinmin"&#125;'</span>;</span><br><span class="line">$c = openssl_encrypt($info, METHOD, SECRET_KEY, OPENSSL_RAW_DATA,$iv );</span><br><span class="line"></span><br><span class="line"><span class="comment">//change role_id:1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">"cipher: "</span>.base64_encode($c).PHP_EOL;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"iv: "</span>.base64_encode($iv ).PHP_EOL;</span><br><span class="line"></span><br><span class="line">$newiv1 = $iv;</span><br><span class="line">$newiv1[<span class="number">11</span>] = $iv[<span class="number">11</span>] ^ <span class="string">'1'</span> ^ <span class="string">'3'</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"plain: "</span>.openssl_decrypt($c,METHOD,SECRET_KEY,OPENSSL_RAW_DATA,$newiv1 ).PHP_EOL;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//change user_id=2</span></span><br><span class="line">$c[<span class="number">8</span>] = $c[<span class="number">8</span>] ^ <span class="string">'1'</span> ^ <span class="string">'3'</span>;		<span class="comment">//改23位对应的上一组也就数8</span></span><br><span class="line">$plain = openssl_decrypt($c,METHOD,SECRET_KEY,OPENSSL_RAW_DATA,$iv );</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"plain: "</span>.$plain.PHP_EOL;</span><br><span class="line">$group1 = <span class="string">'&#123;"role_id":1,"us'</span>;</span><br><span class="line">$newiv2 = <span class="string">""</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($group1);$i++)&#123;</span><br><span class="line">	$newiv2 .= $group1[$i] ^ $iv[$i] ^ $plain[$i];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">"plain: "</span>.openssl_decrypt($c,METHOD,SECRET_KEY,OPENSSL_RAW_DATA,$newiv2 ).PHP_EOL;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;role_id&quot;:3,&quot;us</span><br><span class="line">er_id&quot;:1,&quot;name&quot;:</span><br><span class="line">&quot;tinmin&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="修改第一组"><a href="#修改第一组" class="headerlink" title="修改第一组"></a>修改第一组</h2><p>第一次为了修改<code>role_id</code>,将其修改为1，数了一下，它是第12位，于是修改iv的第12位</p>
+<p>我们知道</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a ^ a ^ b = b</span><br></pre></td></tr></table></figure>
+
+<p>我们知道原来的值为3，那么就有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$iv[11] = $iv[11] ^ &apos;1&apos; ^ &apos;3&apos;;</span><br></pre></td></tr></table></figure>
+
+<p>解密出来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;role_id&quot;:1,&quot;user_id&quot;:1,&quot;name&quot;:&quot;tinmin&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可可可</p>
+<h1 id="修改第二组"><a href="#修改第二组" class="headerlink" title="修改第二组"></a>修改第二组</h1><p>第二次为了修改<code>user_id</code>,将其修改为3，数了一下，它是第23位，是第二组的第8位，于是修改第一组密文的第8位</p>
+<p>就有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$c[8] = $c[8] ^ &apos;1&apos; ^ &apos;3&apos;;</span><br></pre></td></tr></table></figure>
+
+<p>解密出来前面乱码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F���9f�󨪴 �er_id&quot;:1.&quot;name&quot;:&quot;tinmin&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了恢复正常，我们要修改iv，来达到修改第一组密文的目的</p>
+<p>目标字符串为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;role_id&quot;:3,&quot;us</span><br></pre></td></tr></table></figure>
+
+<p>生成新的iv</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$newiv2 = &quot;&quot;;</span><br><span class="line">for($i=0;$i&lt;strlen($group1);$i++)&#123;</span><br><span class="line">	$newiv2 .= $group1[$i] ^ $iv[$i] ^ $plain[$i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解密</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;role_id&quot;:1,&quot;user_id&quot;:1.&quot;name&quot;:&quot;tinmin&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>正常了</p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0x00前言"><span class="toc-text">0x00前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0X01-分析"><span class="toc-text">0X01 分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02测试"><span class="toc-text">0x02测试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#修改第一组"><span class="toc-text">修改第一组</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#修改第二组"><span class="toc-text">修改第二组</span></a></li></ol>
+  </div>
+</aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/WEB/"><i class="fa fa-tags"></i>WEB</a>
+     
+      <a href="/tags/CRYPTO/"><i class="fa fa-tags"></i>CRYPTO</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://ruanyifeng.com/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/design-patterns/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://juejin.im/user/5b91fcf06fb9a05d3c7fd4a5" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://segmentfault.com/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: 954093370@qq.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.jpg" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/2019/11/15/2019-11-15-CTF/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+  
+  
+  
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>
