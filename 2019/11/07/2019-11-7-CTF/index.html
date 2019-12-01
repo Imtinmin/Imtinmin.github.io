@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="CTF,CTF,WEB,文件包含," />
+    <meta name="keywords" content="CTF,WEB,CTF,文件包含," />
   
 
   
@@ -243,7 +243,7 @@
 <p><img src="https://i.loli.net/2019/11/07/RZymX3OwBnTShEQ.png" alt="success"></p>
 <p>日志被污染成</p>
 <blockquote>
-<p>root@853c144383cb:/var/www/html# cat /var/log/mail.log<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: connect from localhost[127.0.0.1]<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: improper command pipelining after MAIL from localhost[127.0.0.1]: RCPT To:<?php phpinfo(); ?>\nDATA\nFrom:<a href="mailto:&#116;&#x69;&#110;&#109;&#x69;&#110;&#64;&#116;&#105;&#110;&#x6d;&#105;&#x6e;&#46;&#99;&#x6e;" target="_blank" rel="noopener">&#116;&#x69;&#110;&#109;&#x69;&#110;&#64;&#116;&#105;&#110;&#x6d;&#105;&#x6e;&#46;&#99;&#x6e;</a>\nSubject:test\nMessage:test\n.\r\n<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: Illegal address syntax from localhost[127.0.0.1] in RCPT command: <?php phpinfo(); ?><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: non-SMTP command from localhost[127.0.0.1]: From:<a href="mailto:&#116;&#x69;&#x6e;&#109;&#105;&#110;&#64;&#x74;&#105;&#x6e;&#x6d;&#105;&#x6e;&#x2e;&#99;&#110;" target="_blank" rel="noopener">&#116;&#x69;&#x6e;&#109;&#105;&#110;&#64;&#x74;&#105;&#x6e;&#x6d;&#105;&#x6e;&#x2e;&#99;&#110;</a><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: disconnect from localhost[127.0.0.1]</p>
+<p>root@853c144383cb:/var/www/html# cat /var/log/mail.log<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: connect from localhost[127.0.0.1]<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: improper command pipelining after MAIL from localhost[127.0.0.1]: RCPT To:<?php phpinfo(); ?>\nDATA\nFrom:<a href="mailto:&#116;&#105;&#110;&#109;&#105;&#110;&#64;&#x74;&#105;&#x6e;&#x6d;&#x69;&#x6e;&#46;&#x63;&#110;" target="_blank" rel="noopener">&#116;&#105;&#110;&#109;&#105;&#110;&#64;&#x74;&#105;&#x6e;&#x6d;&#x69;&#x6e;&#46;&#x63;&#110;</a>\nSubject:test\nMessage:test\n.\r\n<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: Illegal address syntax from localhost[127.0.0.1] in RCPT command: <?php phpinfo(); ?><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: non-SMTP command from localhost[127.0.0.1]: From:<a href="mailto:&#116;&#105;&#x6e;&#x6d;&#105;&#110;&#x40;&#x74;&#105;&#110;&#x6d;&#x69;&#110;&#46;&#x63;&#x6e;" target="_blank" rel="noopener">&#116;&#105;&#x6e;&#x6d;&#105;&#110;&#x40;&#x74;&#105;&#110;&#x6d;&#x69;&#110;&#46;&#x63;&#x6e;</a><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: disconnect from localhost[127.0.0.1]</p>
 </blockquote>
 
   </article>
@@ -260,9 +260,9 @@
   
     <div class="passage-tags">
      
-      <a href="/tags/CTF/"><i class="fa fa-tags"></i>CTF</a>
-     
       <a href="/tags/WEB/"><i class="fa fa-tags"></i>WEB</a>
+     
+      <a href="/tags/CTF/"><i class="fa fa-tags"></i>CTF</a>
      
       <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/"><i class="fa fa-tags"></i>文件包含</a>
     

