@@ -47,13 +47,13 @@
   };
 </script>
 
-  <meta name="description" content="apache 日志污染">
+  <meta name="description" content="前言有些文件包含题目需要getshell，在这里总结一下，以后知道更多会补充">
 <meta name="keywords" content="WEB,CTF,文件包含">
 <meta property="og:type" content="article">
-<meta property="og:title" content="文件包含">
+<meta property="og:title" content="LFI2RCE">
 <meta property="og:url" content="http:&#x2F;&#x2F;imtinmin.github.io&#x2F;2019&#x2F;11&#x2F;07&#x2F;2019-11-7-CTF&#x2F;index.html">
 <meta property="og:site_name" content="Imtinmin的小站">
-<meta property="og:description" content="apache 日志污染">
+<meta property="og:description" content="前言有些文件包含题目需要getshell，在这里总结一下，以后知道更多会补充">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;11&#x2F;07&#x2F;x73ImtKQVhfJRSP.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;11&#x2F;07&#x2F;a8gc3vYq5MOIGWR.png">
@@ -62,7 +62,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;11&#x2F;07&#x2F;wpIVrzCTmHbOKhR.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;11&#x2F;07&#x2F;iOCfUB6IdQZWqMx.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;11&#x2F;07&#x2F;RZymX3OwBnTShEQ.png">
-<meta property="og:updated_time" content="2019-12-22T13:23:52.468Z">
+<meta property="og:updated_time" content="2019-12-24T11:35:31.501Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;11&#x2F;07&#x2F;x73ImtKQVhfJRSP.png">
 
@@ -78,7 +78,7 @@
   };
 </script>
 
-  <title>文件包含 | Imtinmin的小站</title>
+  <title>LFI2RCE | Imtinmin的小站</title>
   
 
 
@@ -195,7 +195,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          文件包含
+          LFI2RCE
         </h1>
 
         <div class="post-meta">
@@ -212,7 +212,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-12-22 21:23:52" itemprop="dateModified" datetime="2019-12-22T21:23:52+08:00">2019-12-22</time>
+                <time title="Modified: 2019-12-24 19:35:31" itemprop="dateModified" datetime="2019-12-24T19:35:31+08:00">2019-12-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -244,9 +244,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="apache-日志污染"><a href="#apache-日志污染" class="headerlink" title="apache 日志污染"></a>apache 日志污染</h1><a id="more"></a>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>有些文件包含题目需要getshell，在这里总结一下，以后知道更多会补充</p>
+<a id="more"></a>
 
-<p>需要能读到<code>apache</code>日志</p>
+<h1 id="apache-日志污染"><a href="#apache-日志污染" class="headerlink" title="apache 日志污染"></a>apache 日志污染</h1><p>需要能读到<code>apache</code>日志</p>
 <p><img src="https://i.loli.net/2019/11/07/x73ImtKQVhfJRSP.png" alt="apache2"></p>
 <p>虽然报400错误，但是会写入<code>access.log</code></p>
 <p><img src="https://i.loli.net/2019/11/07/a8gc3vYq5MOIGWR.png" alt="image.png"></p>
@@ -279,8 +280,7 @@
 <p>自己测试时，想清理日志可以</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@9056889a4768:/var/log/nginx# rm error.log </span><br><span class="line">root@9056889a4768:/var/log/nginx# touch error.log</span><br><span class="line">root@9056889a4768:/var/log/nginx# service nginx restart</span><br></pre></td></tr></table></figure>
 
-<p>不重启日志不会写进去</p>
-<hr>
+<p>修改日志后，不重启日志会写不进去</p>
 <h1 id="SMTP-日志投毒getshell-需要配合ssrf"><a href="#SMTP-日志投毒getshell-需要配合ssrf" class="headerlink" title="SMTP 日志投毒getshell(需要配合ssrf)"></a>SMTP 日志投毒getshell(需要配合ssrf)</h1><p> 出自2019年6月安恒杯的一题 </p>
 <blockquote>
 <p>本地ubuntu18.04打不成，不知道为啥</p>
@@ -303,7 +303,7 @@
 <p><img src="https://i.loli.net/2019/11/07/RZymX3OwBnTShEQ.png" alt="success"></p>
 <p>日志被污染成</p>
 <blockquote>
-<p>root@853c144383cb:/var/www/html# cat /var/log/mail.log<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: connect from localhost[127.0.0.1]<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: improper command pipelining after MAIL from localhost[127.0.0.1]: RCPT To:<?php phpinfo(); ?>\nDATA\nFrom:<a href="mailto:&#x74;&#x69;&#x6e;&#109;&#x69;&#x6e;&#x40;&#116;&#105;&#x6e;&#x6d;&#x69;&#110;&#x2e;&#99;&#110;" target="_blank" rel="noopener">&#x74;&#x69;&#x6e;&#109;&#x69;&#x6e;&#x40;&#116;&#105;&#x6e;&#x6d;&#x69;&#110;&#x2e;&#99;&#110;</a>\nSubject:test\nMessage:test\n.\r\n<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: Illegal address syntax from localhost[127.0.0.1] in RCPT command: <?php phpinfo(); ?><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: non-SMTP command from localhost[127.0.0.1]: From:<a href="mailto:&#116;&#105;&#110;&#109;&#x69;&#110;&#64;&#x74;&#105;&#x6e;&#109;&#105;&#110;&#46;&#99;&#x6e;" target="_blank" rel="noopener">&#116;&#105;&#110;&#109;&#x69;&#110;&#64;&#x74;&#105;&#x6e;&#109;&#105;&#110;&#46;&#99;&#x6e;</a><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: disconnect from localhost[127.0.0.1]</p>
+<p>root@853c144383cb:/var/www/html# cat /var/log/mail.log<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: connect from localhost[127.0.0.1]<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: improper command pipelining after MAIL from localhost[127.0.0.1]: RCPT To:<?php phpinfo(); ?>\nDATA\nFrom:<a href="mailto:&#116;&#105;&#x6e;&#x6d;&#x69;&#x6e;&#64;&#116;&#105;&#110;&#x6d;&#105;&#110;&#46;&#x63;&#110;" target="_blank" rel="noopener">&#116;&#105;&#x6e;&#x6d;&#x69;&#x6e;&#64;&#116;&#105;&#110;&#x6d;&#105;&#110;&#46;&#x63;&#110;</a>\nSubject:test\nMessage:test\n.\r\n<br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: Illegal address syntax from localhost[127.0.0.1] in RCPT command: <?php phpinfo(); ?><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: warning: non-SMTP command from localhost[127.0.0.1]: From:<a href="mailto:&#x74;&#x69;&#x6e;&#x6d;&#105;&#110;&#x40;&#x74;&#105;&#x6e;&#109;&#105;&#x6e;&#46;&#99;&#110;" target="_blank" rel="noopener">&#x74;&#x69;&#x6e;&#x6d;&#105;&#110;&#x40;&#x74;&#105;&#x6e;&#109;&#105;&#x6e;&#46;&#99;&#110;</a><br>Nov  7 12:16:40 853c144383cb postfix/smtpd[127]: disconnect from localhost[127.0.0.1]</p>
 </blockquote>
 
     </div>
@@ -407,7 +407,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#apache-日志污染"><span class="nav-number">1.</span> <span class="nav-text">apache 日志污染</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nginx-日志污染getshell"><span class="nav-number">2.</span> <span class="nav-text">nginx 日志污染getshell</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#写入"><span class="nav-number">2.0.1.</span> <span class="nav-text">写入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SMTP-日志投毒getshell-需要配合ssrf"><span class="nav-number">3.</span> <span class="nav-text">SMTP 日志投毒getshell(需要配合ssrf)</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#apache-日志污染"><span class="nav-number">2.</span> <span class="nav-text">apache 日志污染</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nginx-日志污染getshell"><span class="nav-number">3.</span> <span class="nav-text">nginx 日志污染getshell</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#写入"><span class="nav-number">3.0.1.</span> <span class="nav-text">写入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SMTP-日志投毒getshell-需要配合ssrf"><span class="nav-number">4.</span> <span class="nav-text">SMTP 日志投毒getshell(需要配合ssrf)</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
