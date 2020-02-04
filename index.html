@@ -170,6 +170,112 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://imtinmin.github.io/2020/02/04/2020-1-18-WEB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Imtinmin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Imtinmin的小站">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/04/2020-1-18-WEB/" class="post-title-link" itemprop="url">2020-1-18-WEB</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-02-04 12:46:25 / Modified: 12:49:42" itemprop="dateCreated datePublished" datetime="2020-02-04T12:46:25+08:00">2020-02-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>文章首发于先知社区：<a href="https://xz.aliyun.com/t/7131" target="_blank" rel="noopener">https://xz.aliyun.com/t/7131</a></p>
+</blockquote>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://woj.app/6032.html" target="_blank" rel="noopener">https://woj.app/6032.html</a></p>
+<p><a href="https://paper.seebug.org/1114/" target="_blank" rel="noopener">https://paper.seebug.org/1114/</a></p>
+<h1 id="官方补丁"><a href="#官方补丁" class="headerlink" title="官方补丁"></a>官方补丁</h1><p><a href="https://github.com/top-think/framework/commit/1bbe75019ce6c8e0101a6ef73706217e406439f2" target="_blank" rel="noopener">https://github.com/top-think/framework/commit/1bbe75019ce6c8e0101a6ef73706217e406439f2</a></p>
+<p><img src="https://uploader.shimo.im/f/q7b1EGH7RSM0wKXF.png" alt="图片"></p>
+<p>从只检测长度为32到增加ctype_alnum </p>
+<p><img src="https://uploader.shimo.im/f/dtzZdqKPRJc6699o.png" alt="图片"></p>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>tp6启用.env，感觉跟laravel越来越靠近</p>
+<p>根目录cp   .example.env   .env</p>
+<h1 id="启动session"><a href="#启动session" class="headerlink" title="启动session"></a>启动session</h1><p>修改app/middleware.php</p>
+<p>把session初始化下面代码注释去掉</p>
+<p>*<em>return *</em>[</p>
+<pre><code>*// 全局请求缓存*</code></pre><ul>
+<li><p>// \think\middleware\CheckRequestCache::class,*</p>
+</li>
+<li><p>// 多语言加载*</p>
+</li>
+<li><p>// \think\middleware\LoadLangPack::class,*</p>
+</li>
+<li><p>// Session初始化*</p>
+</li>
+<li><p><em>\think\middleware\SessionInit::*</em>class**</p>
+</li>
+</ul>
+<p>];</p>
+<h2 id="修改控制器"><a href="#修改控制器" class="headerlink" title="修改控制器"></a>修改控制器</h2><p>在app/controller/Index.php里增加</p>
+<p>*<em>public function *</em>test(){</p>
+<pre><code>session(**&apos;demo&apos;**, $_GET[**&apos;c&apos;**]);</code></pre><p>}</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p><img src="https://uploader.shimo.im/f/2sTaNYckAv8avPj8.png" alt="图片"></p>
+<p><img src="https://uploader.shimo.im/f/6GHvPQYAglwVmShb.png" alt="图片"></p>
+<p>注意session长度，要为32</p>
+<p><img src="https://uploader.shimo.im/f/pFCjgtyLOLkNw5Cl.png" alt="图片"></p>
+<p>如果不是32，会重新设置session</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>setId会有两次被调用，第一次是读session</p>
+<p>第二次是在最后$http-&gt;end 执行到SessionInit-&gt;end() -&gt; Session-&gt;save()</p>
+<p>think\Session\Store-&gt;save()</p>
+<p><img src="https://uploader.shimo.im/f/VpfPGTGIBCcUMuvo.png" alt="图片"></p>
+<p>跟进</p>
+<p><img src="https://uploader.shimo.im/f/UPtaSeSuJfUDhDTx.png" alt="图片"></p>
+<p> 拼接sess_</p>
+<p>再拼接目录</p>
+<p><img src="https://uploader.shimo.im/f/d0DO2l3dZFsmOK2T.png" alt="图片"></p>
+<p>得到文件名和目录，创建目录</p>
+<p>继续跟进</p>
+<p>writeFile</p>
+<p><img src="https://uploader.shimo.im/f/tdB45ojzw70iE788.png" alt="图片"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://imtinmin.github.io/2020/01/17/2020-1-17-WP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -802,78 +908,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://imtinmin.github.io/2019/11/09/2019-11-9-CTF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Imtinmin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Imtinmin的小站">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/11/09/2019-11-9-CTF/" class="post-title-link" itemprop="url">备忘录</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-11-09 14:46:30" itemprop="dateCreated datePublished" datetime="2019-11-09T14:46:30+08:00">2019-11-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-12-24 20:11:28" itemprop="dateModified" datetime="2019-12-24T20:11:28+08:00">2019-12-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/11/09/2019-11-9-CTF/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -944,7 +978,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
