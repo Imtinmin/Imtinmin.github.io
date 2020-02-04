@@ -50,7 +50,7 @@
   <meta name="description" content="文章首发于先知社区：https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;7131  参考https:&#x2F;&#x2F;woj.app&#x2F;6032.html https:&#x2F;&#x2F;paper.seebug.org&#x2F;1114&#x2F; 官方补丁https:&#x2F;&#x2F;github.com&#x2F;top-think&#x2F;framework&#x2F;commit&#x2F;1bbe75019ce6c8e0101a6ef73706217e406439f2  从只检测长度为3">
 <meta name="keywords" content="WEB">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2020-1-18-WEB">
+<meta property="og:title" content="ThinkPHP6.0 任意文件操作">
 <meta property="og:url" content="http:&#x2F;&#x2F;imtinmin.github.io&#x2F;2020&#x2F;02&#x2F;04&#x2F;2020-1-18-WEB&#x2F;index.html">
 <meta property="og:site_name" content="Imtinmin的小站">
 <meta property="og:description" content="文章首发于先知社区：https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;7131  参考https:&#x2F;&#x2F;woj.app&#x2F;6032.html https:&#x2F;&#x2F;paper.seebug.org&#x2F;1114&#x2F; 官方补丁https:&#x2F;&#x2F;github.com&#x2F;top-think&#x2F;framework&#x2F;commit&#x2F;1bbe75019ce6c8e0101a6ef73706217e406439f2  从只检测长度为3">
@@ -64,7 +64,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;uploader.shimo.im&#x2F;f&#x2F;UPtaSeSuJfUDhDTx.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;uploader.shimo.im&#x2F;f&#x2F;d0DO2l3dZFsmOK2T.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;uploader.shimo.im&#x2F;f&#x2F;tdB45ojzw70iE788.png">
-<meta property="og:updated_time" content="2020-02-04T04:49:42.997Z">
+<meta property="og:updated_time" content="2020-02-04T04:53:55.701Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;uploader.shimo.im&#x2F;f&#x2F;q7b1EGH7RSM0wKXF.png">
 
@@ -80,7 +80,7 @@
   };
 </script>
 
-  <title>2020-1-18-WEB | Imtinmin的小站</title>
+  <title>ThinkPHP6.0 任意文件操作 | Imtinmin的小站</title>
   
 
 
@@ -197,7 +197,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          2020-1-18-WEB
+          ThinkPHP6.0 任意文件操作
         </h1>
 
         <div class="post-meta">
@@ -208,7 +208,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-02-04 12:46:25 / Modified: 12:49:42" itemprop="dateCreated datePublished" datetime="2020-02-04T12:46:25+08:00">2020-02-04</time>
+              <time title="Created: 2020-02-04 12:46:25 / Modified: 12:53:55" itemprop="dateCreated datePublished" datetime="2020-02-04T12:46:25+08:00">2020-02-04</time>
             </span>
 
           
@@ -277,6 +277,9 @@
 <p>继续跟进</p>
 <p>writeFile</p>
 <p><img src="https://uploader.shimo.im/f/tdB45ojzw70iE788.png" alt="图片"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><blockquote>
+<p>第一次写分析漏洞，措辞和分析如果有误，欢迎指教</p>
+</blockquote>
 
     </div>
 
@@ -374,7 +377,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">1.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#官方补丁"><span class="nav-number">2.</span> <span class="nav-text">官方补丁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境搭建"><span class="nav-number">3.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动session"><span class="nav-number">4.</span> <span class="nav-text">启动session</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改控制器"><span class="nav-number">4.1.</span> <span class="nav-text">修改控制器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">4.2.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">4.3.</span> <span class="nav-text">分析</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">1.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#官方补丁"><span class="nav-number">2.</span> <span class="nav-text">官方补丁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境搭建"><span class="nav-number">3.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动session"><span class="nav-number">4.</span> <span class="nav-text">启动session</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改控制器"><span class="nav-number">4.1.</span> <span class="nav-text">修改控制器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">4.2.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">4.3.</span> <span class="nav-text">分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
